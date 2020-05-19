@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { db } from '../adapters/psotgres'
+import { db } from '@app/adapters/psotgres'
 import HttpException from '@app/exceptions/HttpException'
 
 export const getAllSelections = async (
@@ -24,7 +24,11 @@ export const getSelection = async (
   try {
     const { id } = req.params
 
-    const selection = await db.select('*').from('selections').where('id', id)
+    const selection = await db
+      .select('*')
+      .from('selections')
+      .where('id', id)
+      .first()
 
     if (selection.length === 0) {
       return next(new HttpException(404, 'Selection not found'))
