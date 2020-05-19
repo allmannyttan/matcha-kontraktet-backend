@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { db } from '@app/adapters/psotgres'
+import { db } from '@app/adapters/postgres'
 import HttpException from '@app/exceptions/HttpException'
 
 export const getAllSelections = async (

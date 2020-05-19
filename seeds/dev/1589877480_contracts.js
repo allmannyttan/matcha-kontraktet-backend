@@ -7,7 +7,7 @@ exports.seed = async (knex) => {
         name: 'Johanna Andersson',
         address: 'Vägen 1',
       },
-      population_registration_informtion: {
+      population_registration_information: {
         name: 'Johanna Andersson',
         address: 'Vägen 1',
       },
@@ -19,7 +19,7 @@ exports.seed = async (knex) => {
         name: 'Niklas Nilsson',
         address: 'Vägen 1',
       },
-      population_registration_informtion: {
+      population_registration_information: {
         name: 'Greta Karlsson',
         address: 'Vägen 1',
       },
