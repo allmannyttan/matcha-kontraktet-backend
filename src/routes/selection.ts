@@ -12,7 +12,7 @@ export const getAllSelections = async (
 
     return res.send({ data: selections })
   } catch (error) {
-    return next(error)
+    return next(new HttpException(500, 'Internal Server Error'))
   }
 }
 
@@ -32,7 +32,7 @@ export const getSelection = async (
 
     return res.send({ data: selection })
   } catch (error) {
-    return next(error)
+    return next(new HttpException(500, 'Internal Server Error'))
   }
 }
 
@@ -52,7 +52,7 @@ export const deleteSelection = async (
       },
     })
   } catch (error) {
-    return next(error)
+    return next(new HttpException(500, 'Internal Server Error'))
   }
 }
 
