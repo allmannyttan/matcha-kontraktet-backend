@@ -4,7 +4,7 @@ services:
   subletdetector-postgres:
     image: postgres:12.2-alpine
     ports:
-      - 127.0.0.1:${PORTS__POSTGRES:-5432}:5432
+      - 127.0.0.1:${PORTS__POSTGRES:-5442}:5432
     environment:
       - POSTGRES_USER=${POSTGRES__USER:-iteamadmin}
       - POSTGRES_PASSWORD=${POSTGRES__PASS:-adminadmin1337}

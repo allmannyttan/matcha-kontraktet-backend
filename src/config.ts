@@ -5,6 +5,7 @@ interface Postgres {
   user: string
   password: string
   database: string
+  port: number
 }
 
 export interface Config {
@@ -21,6 +22,7 @@ const config = configPackage({
       user: 'iteamadmin',
       password: 'adminadmin1337',
       database: 'subletdetector',
+      port: 5442,
     },
   },
 })

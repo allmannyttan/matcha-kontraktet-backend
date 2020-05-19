@@ -3,13 +3,13 @@ import HttpException from '@app/exceptions/HttpException'
 
 const errorHandler = (
   error: HttpException,
-  request: Request,
-  response: Response,
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   const status = error.status || 500
   const message = error.message || 'Something went wrong'
-  response.status(status).send({
+  res.status(status).send({
     status,
     message,
   })

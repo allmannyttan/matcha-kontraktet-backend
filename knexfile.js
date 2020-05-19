@@ -7,6 +7,7 @@ module.exports = {
       database: 'subletdetector',
       user: 'iteamadmin',
       password: 'adminadmin1337',
+      port: 5442,
     },
     migrations: {
       tableName: 'knex_migrations',

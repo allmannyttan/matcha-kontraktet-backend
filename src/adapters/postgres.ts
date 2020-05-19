@@ -8,6 +8,7 @@ export const db = knex({
     user: config.postgres.user,
     password: config.postgres.password,
     database: config.postgres.database,
+    port: config.postgres.port,
     timezone: 'UTC',
     dateStrings: true,
   },
