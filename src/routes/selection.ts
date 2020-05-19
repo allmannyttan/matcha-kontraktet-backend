@@ -50,3 +50,22 @@ export const deleteSelection = async (
     return next(error)
   }
 }
+
+export const exportSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    return res.send({
+      data: {
+        selectionId: id,
+        export: 'not build yet',
+      },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
