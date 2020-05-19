@@ -1,6 +1,10 @@
 import express, { Application, Response } from 'express'
 import config from '@app/config'
-import { getSelection, getAllSelections } from './routes/selection'
+import {
+  getSelection,
+  getAllSelections,
+  deleteSelection,
+} from './routes/selection'
 
 const app: Application = express()
 
@@ -10,7 +14,7 @@ app.get('/', (_req, res: Response) =>
 
 app.get('/selection', getAllSelections)
 app.get('/selection/:id', getSelection)
-app.delete('/selection/:id', (_req, res: Response) => res.send({ data: [] }))
+app.delete('/selection/:id', deleteSelection)
 app.get('/selection/:id/export', (_req, res: Response) =>
   res.send({ data: [] })
 )

@@ -30,3 +30,23 @@ export const getSelection = async (
     return next(error)
   }
 }
+
+export const deleteSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    await db.select('*').from('selections').where('id', id).del()
+
+    return res.send({
+      data: {
+        selectionId: id,
+      },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
