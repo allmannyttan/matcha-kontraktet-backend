@@ -29,5 +29,5 @@ export interface Selection {
   contracts: Contract[]
   last_population_registration_lookup: Date
   created_by: string
-  created: Date
+  created_at: Date
 }
