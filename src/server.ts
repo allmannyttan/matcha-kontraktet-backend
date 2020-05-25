@@ -16,6 +16,7 @@ import {
   updateContractSchema,
   deleteSelectionSchema,
 } from '@app/validation/validationSchemas'
+import { routes as authRoutes } from '@app/routes/auth'
 
 const validator = createValidator()
 const app: Application = express()
@@ -55,6 +56,8 @@ app.post(
 )
 
 app.post('/auth', (_req, res: Response) => res.send({ token: '' }))
+
+authRoutes(app)
 
 app.listen({ port: config.port }, () =>
   console.log(`🚀 Server ready at http://localhost:${config.port}`)

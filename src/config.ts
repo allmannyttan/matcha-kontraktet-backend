@@ -39,6 +39,7 @@ const config = configPackage({
 })
 
 export default {
+  auth: config.get('auth'),
   port: config.get('port'),
   postgres: config.get('postgres'),
 } as Config

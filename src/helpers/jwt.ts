@@ -1,4 +1,4 @@
-import { auth } from '../config'
+import config from '../config'
 import { JWT, UserTokenInfo } from './types'
 import {
   setUserFailedLoginAttempts,
@@ -9,7 +9,7 @@ import createHttpError from 'http-errors'
 import hash from './hash'
 import jwt from 'jsonwebtoken'
 
-const { secret } = auth
+const { secret } = config.auth
 
 export const createToken = async (
   username: string,
