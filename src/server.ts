@@ -1,6 +1,7 @@
 import express, { Application, Response } from 'express'
 import bodyParser from 'body-parser'
 import config from '@app/config'
+import cors from 'cors'
 import {
   getSelection,
   getAllSelections,
@@ -20,6 +21,12 @@ const validator = createValidator()
 const app: Application = express()
 
 app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
+app.use(cors())
 
 app.get('/', (_req, res: Response) =>
   res.send({ name: 'sublet-detector', version: '1.0.0' })

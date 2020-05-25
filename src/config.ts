@@ -11,6 +11,11 @@ interface Postgres {
 export interface Config {
   port: number
   postgres: Postgres
+  auth: {
+    secret: string
+    expiresIn: string
+    maxFailedLoginAttempts: number
+  }
 }
 
 const config = configPackage({
@@ -23,6 +28,12 @@ const config = configPackage({
       password: 'adminadmin1337',
       database: 'subletdetector',
       port: 5442,
+    },
+    auth: {
+      secret:
+        'Kungen, Drottningen, Kronprinsessan och Prins Daniel höll i dag ett videomöte med Kungl. Vetenskapsakademien.',
+      expiresIn: '3h', // format allowed by https://github.com/zeit/ms
+      maxFailedLoginAttempts: 3,
     },
   },
 })

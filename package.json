@@ -11,7 +11,11 @@
     "dev": "ts-node-dev --no-notify --ignore-watch node_modules -r tsconfig-paths/register src/server.ts",
     "migrate:up": "knex migrate:latest --env dev",
     "migrate:down": "knex migrate:rollback --all --env dev",
-    "seed:dev": "knex seed:run --env dev"
+    "seed:dev": "knex seed:run --env dev",
+    "test:ci": "jest --ci --forceExit",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test": "npm run test:watch"
   },
   "keywords": [],
   "author": "",
@@ -20,12 +24,15 @@
     "@iteam/eslint-config-node": "0.3.0",
     "@types/express": "^4.17.6",
     "@types/hapi__joi": "^17.1.0",
+    "@types/jest": "25.2.1",
     "eslint": "7.0.0",
     "husky": "4.2.5",
     "jest": "26.0.1",
     "jest-watch-typeahead": "0.6.0",
     "prettier": "2.0.5",
     "pretty-quick": "2.0.1",
+    "ts-jest": "^26.0.0",
+    "ts-node": "8.8.2",
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths": "^3.9.0",
     "typescript": "3.6.4"
@@ -33,10 +40,15 @@
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@iteam/config": "^12.1.1",
+    "@types/jsonwebtoken": "^8.5.0",
     "body-parser": "^1.19.0",
+    "cors": "2.8.5",
     "express": "^4.17.1",
+    "express-async-handler": "1.1.4",
     "express-joi-validation": "^4.0.3",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
+    "pg": "^8.2.1",
+    "sql-template-strings": "2.2.2"
   }
 }
