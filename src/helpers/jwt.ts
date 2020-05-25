@@ -35,7 +35,7 @@ export const createToken = async (
 
       await setUserFailedLoginAttempts(user.id, fails)
 
-      if (fails >= auth.maxFailedLoginAttempts) {
+      if (fails >= config.auth.maxFailedLoginAttempts) {
         await setUserLocked(user.id, true)
       }
 
@@ -51,9 +51,9 @@ export const createToken = async (
         sub: user.id,
         username: user.username,
       },
-      auth.secret,
+      config.auth.secret,
       {
-        expiresIn: auth.expiresIn,
+        expiresIn: config.auth.expiresIn,
       }
     )
 
@@ -90,9 +90,9 @@ export const refreshToken = async (token: UserTokenInfo): Promise<JWT> => {
         sub: user.id,
         username: user.username,
       },
-      auth.secret,
+      config.auth.secret,
       {
-        expiresIn: auth.expiresIn,
+        expiresIn: config.auth.expiresIn,
       }
     )
 

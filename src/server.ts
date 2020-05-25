@@ -17,6 +17,7 @@ import {
   deleteSelectionSchema,
 } from '@app/validation/validationSchemas'
 import { routes as authRoutes } from '@app/routes/auth'
+import { authMiddleware } from './middleware/auth'
 
 const validator = createValidator()
 const app: Application = express()
@@ -33,29 +34,30 @@ app.get('/', (_req, res: Response) =>
   res.send({ name: 'sublet-detector', version: '1.0.0' })
 )
 
-app.get('/selection', getAllSelections, errorHandler)
+app.get('/selection', authMiddleware, getAllSelections, errorHandler)
 app.get(
   '/selection/:id',
+  authMiddleware,
   validator.params(getSelectionSchema),
   getSelection,
   errorHandler
 )
 app.delete(
   '/selection/:id',
+  authMiddleware,
   validator.params(deleteSelectionSchema),
   deleteSelection,
   errorHandler
 )
-app.get('/selection/:id/export', exportSelection, errorHandler)
+app.get('/selection/:id/export', authMiddleware, exportSelection, errorHandler)
 
 app.post(
   '/contract',
+  authMiddleware,
   validator.body(updateContractSchema),
   updateContract,
   errorHandler
 )
-
-app.post('/auth', (_req, res: Response) => res.send({ token: '' }))
 
 authRoutes(app)
 
