@@ -3,6 +3,7 @@ import asyncHandler from 'express-async-handler'
 import hash from '@app/helpers/hash'
 import { createToken, refreshToken } from '@app/helpers/jwt'
 import { authMiddleware } from '@app/middleware/auth'
+import errorHandler from '@app/middleware/errorHandler'
 
 export const routes = (app: Application) => {
   /**
@@ -35,7 +36,8 @@ export const routes = (app: Application) => {
         req.query.password as string
       )
       res.json(saltAndHash)
-    })
+    }),
+    errorHandler
   )
 
   /**
@@ -70,7 +72,8 @@ export const routes = (app: Application) => {
       const { username, password } = req.body
       const token = await createToken(username, password)
       res.json(token)
-    })
+    }),
+    errorHandler
   )
 
   /**
@@ -110,7 +113,8 @@ export const routes = (app: Application) => {
       } else {
         res.json(await refreshToken(req.auth))
       }
-    })
+    }),
+    errorHandler
   )
 
   /**
@@ -136,8 +140,13 @@ export const routes = (app: Application) => {
    *      '401':
    *        description: 'Unauthorized'
    */
-  app.get('/auth/test', authMiddleware, (_req, res) => {
-    console.log('test')
-    res.send('Authorization OK')
-  })
+  app.get(
+    '/auth/test',
+    authMiddleware,
+    (_req: Request, res: Response) => {
+      console.log('test')
+      res.send('Authorization OK')
+    },
+    errorHandler
+  )
 }
