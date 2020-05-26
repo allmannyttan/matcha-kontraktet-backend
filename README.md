@@ -16,4 +16,4 @@ Go to http://localhost:9000/
 ## Migrations and seeds
 
 - Create new migration: `npx knex migrate:make <migration_name>`
-- Create new seed: `npx knex seed:make $(date +%s)_<name>`
+- Create new seed for dev: `npx knex seed:make $(date +%s)_<name> --env dev`
