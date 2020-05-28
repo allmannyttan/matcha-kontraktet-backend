@@ -9,7 +9,7 @@ exports.up = (knex) => {
       table.json('contract_information').notNullable()
       table.json('population_registration_information').notNullable()
       table.string('status', 128).notNullable()
-      table.string('comment', 128).notNullable()
+      table.string('comment', 128).notNullable().defaultTo('')
     })
   )
 }

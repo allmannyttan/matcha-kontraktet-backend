@@ -7,6 +7,7 @@ import {
   getAllSelections,
   deleteSelection,
   exportSelection,
+  createSelection,
 } from '@app/routes/selection'
 import { updateContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
@@ -15,6 +16,7 @@ import {
   getSelectionSchema,
   updateContractSchema,
   deleteSelectionSchema,
+  createSelectionSchema,
 } from '@app/validation/validationSchemas'
 import { routes as authRoutes } from '@app/routes/auth'
 import { authMiddleware } from './middleware/auth'
@@ -35,6 +37,13 @@ app.get('/', (_req, res: Response) =>
 )
 
 app.get('/selection', authMiddleware, getAllSelections, errorHandler)
+app.post(
+  '/selection',
+  authMiddleware,
+  validator.body(createSelectionSchema),
+  createSelection,
+  errorHandler
+)
 app.get(
   '/selection/:id',
   authMiddleware,
@@ -51,8 +60,8 @@ app.delete(
 )
 app.get('/selection/:id/export', authMiddleware, exportSelection, errorHandler)
 
-app.post(
-  '/contract',
+app.put(
+  '/contract/:id',
   authMiddleware,
   validator.body(updateContractSchema),
   updateContract,

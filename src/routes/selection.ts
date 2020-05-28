@@ -2,6 +2,25 @@ import { Request, Response, NextFunction } from 'express'
 import { db } from '@app/adapters/postgres'
 import HttpException from '@app/exceptions/HttpException'
 
+export const createSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { selection_term, name } = req.body
+    const [newSelection] = await db('selections').returning('*').insert({
+      selection_term,
+      name,
+      created_by: 'a logged on user to be written using auth in another branch',
+    })
+
+    return res.send({ data: newSelection })
+  } catch (error) {
+    console.log(error)
+    return next(new HttpException(500, 'Internal Server Error'))
+  }
+}
 export const getAllSelections = async (
   _req: Request,
   res: Response,
