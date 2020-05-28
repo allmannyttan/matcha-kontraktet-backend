@@ -4,6 +4,11 @@ export const getSelectionSchema = Joi.object({
   id: Joi.string().uuid().required(),
 })
 
+export const createSelectionSchema = Joi.object({
+  selection_term: Joi.string().required(),
+  name: Joi.string(),
+})
+
 export const deleteSelectionSchema = Joi.object({
   id: Joi.string().uuid().required(),
 })

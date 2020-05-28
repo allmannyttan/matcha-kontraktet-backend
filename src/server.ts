@@ -6,6 +6,7 @@ import {
   getAllSelections,
   deleteSelection,
   exportSelection,
+  createSelection,
 } from '@app/routes/selection'
 import { updateContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
@@ -14,6 +15,7 @@ import {
   getSelectionSchema,
   updateContractSchema,
   deleteSelectionSchema,
+  createSelectionSchema,
 } from '@app/validation/validationSchemas'
 
 const validator = createValidator()
@@ -25,6 +27,12 @@ app.get('/', (_req, res: Response) =>
   res.send({ name: 'sublet-detector', version: '1.0.0' })
 )
 
+app.post(
+  '/selection',
+  validator.body(createSelectionSchema),
+  createSelection,
+  errorHandler
+)
 app.get('/selection', getAllSelections, errorHandler)
 app.get(
   '/selection/:id',
