@@ -48,8 +48,8 @@ app.delete(
 )
 app.get('/selection/:id/export', exportSelection, errorHandler)
 
-app.post(
-  '/contract',
+app.put(
+  '/contract/:id',
   validator.body(updateContractSchema),
   updateContract,
   errorHandler

@@ -14,7 +14,6 @@ export const deleteSelectionSchema = Joi.object({
 })
 
 export const updateContractSchema = Joi.object({
-  contractId: Joi.string().uuid().required(),
   status: Joi.string()
     .valid(
       ...['VERIFIED', 'INVALID', 'MANUALLY_VERIFIED', 'UNDER_INVESTIGATION']
