@@ -6,6 +6,7 @@ export enum ContractStatus {
 }
 
 interface ContractInformation {
+  pnr: string
   name: string
   address: string
 }
@@ -17,10 +18,10 @@ interface PopulationRegistrationInformation {
 
 export interface Contract {
   id: string
-  contract_information: ContractInformation
-  population_registration_information: PopulationRegistrationInformation
-  status: ContractStatus
-  comment: string
+  contract_information?: ContractInformation
+  population_registration_information?: PopulationRegistrationInformation
+  status?: ContractStatus
+  comment?: string
 }
 
 export interface Selection {

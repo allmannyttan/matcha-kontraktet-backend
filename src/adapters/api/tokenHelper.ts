@@ -25,6 +25,7 @@ export const getNewAccessToken = async (): Promise<string> => {
 const isInvalidAccessTokenError = (error: Error): boolean => {
   return (
     error.message === 'Request failed with status code 403' ||
+    error.message === 'Request failed with status code 401' ||
     error.message === NO_TOKENS_IN_DB_ERROR
   )
 }
@@ -54,6 +55,7 @@ export const tokenRefresher = <T extends (arg: APIRequest) => any>(
     } catch (error) {
       //If error is invalid access-token, get a new one and retry.
       if (isInvalidAccessTokenError(error)) {
+        console.log('trying to refresh')
         const token = await getNewAccessToken()
 
         await setAccessTokenInDb(token)
@@ -62,6 +64,7 @@ export const tokenRefresher = <T extends (arg: APIRequest) => any>(
         const results = await func(arg)
         return results
       } else {
+        console.log('other error')
         throw error
       }
     }

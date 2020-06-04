@@ -4,6 +4,7 @@ import { client } from '@app/adapters/api'
 import HttpException from '@app/exceptions/HttpException'
 import { Select } from 'knex'
 import { Selection } from '../types'
+import { Contract } from '../types'
 
 export const createSelection = async (
   req: Request,
@@ -46,8 +47,6 @@ export const getSelection = async (
 ) => {
   try {
     const { id } = req.params
-
-    console.log('selection', id)
 
     const selection = await getSelectionFromDb(id)
 
@@ -110,6 +109,51 @@ export const exportSelection = async (
   }
 }
 
+const updateContractInDb = async (contract: any): Promise<string> => {
+  let contractInDb = await db<Contract>('contracts')
+    .where('contract_id', contract.id)
+    .first()
+
+  if (contractInDb) {
+    await db('contracts')
+      .update({
+        contract_information: {
+          name: contract.partners[0].tenant.fullName,
+          pnr: contract.partners[0].tenant.socialSecurityNumber,
+          address:
+            contract.rentalObject &&
+            contract.rentalObject.rental &&
+            contract.rentalObject.rental.addresses
+              ? contract.rentalObject.rental.addresses[0]
+              : null,
+        },
+      })
+      .where('id', contractInDb.id)
+
+    return contractInDb.id
+  } else {
+    const newId: string = await db('contracts')
+      .insert({
+        contract_information: {
+          name: contract.partners[0].tenant.fullName,
+          pnr: contract.partners[0].tenant.socialSecurityNumber,
+          address:
+            contract.rentalObject &&
+            contract.rentalObject.rental &&
+            contract.rentalObject.rental.addresses
+              ? contract.rentalObject.rental.addresses[0]
+              : null,
+        },
+        contract_id: contract.id,
+      })
+      .returning('id')
+
+    return newId
+  }
+}
+
+const connectContractToSelection = async (contractDbId: string) => {}
+
 export const fetchContracts = async (
   req: Request,
   res: Response,
@@ -124,9 +168,14 @@ export const fetchContracts = async (
       url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,
     })
 
+    for (const contract of contracts) {
+      const dbId = updateContractInDb(contract)
+      // connectContractToSelection(dbId)
+    }
+
     return res.send({
       data: {
-        contracts: contracts,
+        contractsRetrieved: contracts.length,
       },
     })
   } catch (error) {
