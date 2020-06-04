@@ -1,6 +1,12 @@
-import { Request, Response, NextFunction } from 'express'
-import { db } from '@app/adapters/postgres'
 import HttpException from '@app/exceptions/HttpException'
+import {
+  deleteSelectionById,
+  getSelectionById,
+  getSelections,
+  insertSelection,
+} from '@app/services/db'
+import { syncSelection } from '@app/services/populationInformationSync'
+import { NextFunction, Request, Response } from 'express'
 
 export const createSelection = async (
   req: Request,
@@ -9,11 +15,11 @@ export const createSelection = async (
 ) => {
   try {
     const { selection_term, name } = req.body
-    const [newSelection] = await db('selections').returning('*').insert({
+    const [newSelection] = await insertSelection(
       selection_term,
       name,
-      created_by: 'a logged on user to be written using auth in another branch',
-    })
+      req.auth ? req.auth.username : ''
+    )
 
     return res.send({ data: newSelection })
   } catch (error) {
@@ -27,7 +33,7 @@ export const getAllSelections = async (
   next: NextFunction
 ) => {
   try {
-    const selections = await db.select('*').from('selections')
+    const selections = await getSelections()
 
     return res.send({ data: selections })
   } catch (error) {
@@ -42,14 +48,9 @@ export const getSelection = async (
 ) => {
   try {
     const { id } = req.params
+    const selection = await getSelectionById(id)
 
-    const selection = await db
-      .select('*')
-      .from('selections')
-      .where('id', id)
-      .first()
-
-    if (selection.length === 0) {
+    if (!selection) {
       return next(new HttpException(404, 'Selection not found'))
     }
 
@@ -67,7 +68,7 @@ export const deleteSelection = async (
   try {
     const { id } = req.params
 
-    await db.select('*').from('selections').where('id', id).del()
+    await deleteSelectionById(id)
 
     return res.send({
       data: {
@@ -91,6 +92,26 @@ export const exportSelection = async (
       data: {
         selectionId: id,
         export: 'not build yet',
+      },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const syncPopulationRegistration = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params
+
+  try {
+    await syncSelection(id, req.auth ? req.auth.username : '')
+
+    return res.send({
+      data: {
+        success: true,
       },
     })
   } catch (error) {

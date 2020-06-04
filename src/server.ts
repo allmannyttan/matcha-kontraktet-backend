@@ -7,6 +7,7 @@ import {
   getAllSelections,
   deleteSelection,
   exportSelection,
+  syncPopulationRegistration,
   createSelection,
 } from '@app/routes/selection'
 import { updateContract } from '@app/routes/contracts'
@@ -49,6 +50,12 @@ app.get(
   authMiddleware,
   validator.params(getSelectionSchema),
   getSelection,
+  errorHandler
+)
+app.get(
+  '/selection/:id/sync-population-registration',
+  authMiddleware,
+  syncPopulationRegistration,
   errorHandler
 )
 app.delete(

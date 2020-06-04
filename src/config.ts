@@ -8,6 +8,14 @@ interface Postgres {
   port: number
 }
 
+interface Syna {
+  host: string
+  username: string
+  customerNumber: string
+  callingIpAddress: string
+  batchSize: number
+}
+
 export interface Config {
   port: number
   postgres: Postgres
@@ -16,6 +24,7 @@ export interface Config {
     expiresIn: string
     maxFailedLoginAttempts: number
   }
+  syna: Syna
 }
 
 const config = configPackage({
@@ -35,6 +44,11 @@ const config = configPackage({
       expiresIn: '3h', // format allowed by https://github.com/zeit/ms
       maxFailedLoginAttempts: 3,
     },
+    syna: {
+      host: 'https://arkivet.syna.se',
+      callingIpAddress: '80.244.206.18',
+      batchSize: 100,
+    },
   },
 })
 
@@ -42,4 +56,5 @@ export default {
   auth: config.get('auth'),
   port: config.get('port'),
   postgres: config.get('postgres'),
+  syna: config.get('syna'),
 } as Config
