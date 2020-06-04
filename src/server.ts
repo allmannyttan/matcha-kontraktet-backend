@@ -8,6 +8,7 @@ import {
   deleteSelection,
   exportSelection,
   createSelection,
+  fetchContracts,
 } from '@app/routes/selection'
 import { updateContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
@@ -59,6 +60,13 @@ app.delete(
   errorHandler
 )
 app.get('/selection/:id/export', authMiddleware, exportSelection, errorHandler)
+app.get(
+  '/selection/:id/fetch-contracts',
+  authMiddleware,
+  validator.params(getSelectionSchema),
+  fetchContracts,
+  errorHandler
+)
 
 app.put(
   '/contract/:id',

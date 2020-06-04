@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
 import { db } from '@app/adapters/postgres'
+import { client } from '@app/adapters/api'
 import HttpException from '@app/exceptions/HttpException'
+import { Select } from 'knex'
+import { Selection } from '../types'
 
 export const createSelection = async (
   req: Request,
@@ -21,6 +24,7 @@ export const createSelection = async (
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
+
 export const getAllSelections = async (
   _req: Request,
   res: Response,
@@ -43,13 +47,11 @@ export const getSelection = async (
   try {
     const { id } = req.params
 
-    const selection = await db
-      .select('*')
-      .from('selections')
-      .where('id', id)
-      .first()
+    console.log('selection', id)
 
-    if (selection.length === 0) {
+    const selection = await getSelectionFromDb(id)
+
+    if (!selection) {
       return next(new HttpException(404, 'Selection not found'))
     }
 
@@ -57,6 +59,16 @@ export const getSelection = async (
   } catch (error) {
     return next(new HttpException(500, 'Internal Server Error'))
   }
+}
+
+const getSelectionFromDb = async (id: string): Promise<Selection> => {
+  const selection = await db
+    .select('*')
+    .from('selections')
+    .where('id', id)
+    .first()
+
+  return selection
 }
 
 export const deleteSelection = async (
@@ -91,6 +103,30 @@ export const exportSelection = async (
       data: {
         selectionId: id,
         export: 'not build yet',
+      },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const fetchContracts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    const selection = await getSelectionFromDb(id)
+
+    const contracts = await client.get({
+      url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,
+    })
+
+    return res.send({
+      data: {
+        contracts: contracts,
       },
     })
   } catch (error) {

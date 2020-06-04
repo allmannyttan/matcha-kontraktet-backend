@@ -8,6 +8,12 @@ interface Postgres {
   port: number
 }
 
+interface API {
+  baseUrl: string
+  username: string
+  password: string
+}
+
 export interface Config {
   port: number
   postgres: Postgres
@@ -16,6 +22,7 @@ export interface Config {
     expiresIn: string
     maxFailedLoginAttempts: number
   }
+  api: API
 }
 
 const config = configPackage({
@@ -35,6 +42,11 @@ const config = configPackage({
       expiresIn: '3h', // format allowed by https://github.com/zeit/ms
       maxFailedLoginAttempts: 3,
     },
+    api: {
+      baseUrl: 'http://localhost:4000/',
+      username: 'user',
+      password: 'hejhej',
+    },
   },
 })
 
@@ -42,4 +54,5 @@ export default {
   auth: config.get('auth'),
   port: config.get('port'),
   postgres: config.get('postgres'),
+  api: config.get('api'),
 } as Config

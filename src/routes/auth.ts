@@ -107,7 +107,6 @@ export const routes = (app: Application) => {
     '/auth/refresh-token',
     authMiddleware,
     asyncHandler(async (req: Request, res: Response) => {
-      console.log('handling request')
       if (!req.auth) {
         res.status(401).send('Unauthorized, token missing')
       } else {
