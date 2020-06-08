@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { db } from '@app/adapters/postgres'
-import { client } from '@app/adapters/api'
 import HttpException from '@app/exceptions/HttpException'
-import { Select } from 'knex'
-import { Selection } from '../types'
-import { Contract } from '../types'
 import {
   deleteSelectionById,
   getSelectionById,
@@ -12,6 +7,7 @@ import {
   insertSelection,
 } from '@app/services/db'
 import { syncSelection } from '@app/services/populationInformationSync'
+import { fetchApiContracts } from '@app/services/fetchApiContracts'
 
 export const createSelection = async (
   req: Request,
@@ -105,70 +101,6 @@ export const exportSelection = async (
   }
 }
 
-const updateContractInDb = async (contract: any): Promise<string> => {
-  let contractInDb = await db<Contract>('contracts')
-    .where('contract_id', contract.id)
-    .first()
-
-  if (contractInDb) {
-    await db('contracts')
-      .update({
-        contract_information: {
-          name: contract.partners[0].tenant.fullName,
-          pnr: contract.partners[0].tenant.socialSecurityNumber,
-          address:
-            contract.rentalObject &&
-            contract.rentalObject.rental &&
-            contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0].street
-              : null,
-        },
-      })
-      .where('id', contractInDb.id)
-
-    return contractInDb.id
-  } else {
-    const newId: string = await db('contracts')
-      .insert({
-        contract_information: {
-          name: contract.partners[0].tenant.fullName,
-          pnr: contract.partners[0].tenant.socialSecurityNumber,
-          address:
-            contract.rentalObject &&
-            contract.rentalObject.rental &&
-            contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0]
-              : null,
-        },
-        contract_id: contract.id,
-      })
-      .returning('id')
-
-    return newId
-  }
-}
-
-const addContractToSelection = async (
-  contractDbId: string,
-  selectionId: string
-) => {
-  const selectionContract = await db('selection_contracts')
-    .where({
-      selection_id: selectionId,
-      contract_id: contractDbId,
-    })
-    .first()
-
-  if (!selectionContract) {
-    return await db('selection_contracts').insert({
-      selection_id: selectionId,
-      contract_id: contractDbId,
-    })
-  } else {
-    return
-  }
-}
-
 export const syncPopulationRegistration = async (
   req: Request,
   res: Response,
@@ -197,22 +129,11 @@ export const fetchContracts = async (
   try {
     const { id } = req.params
 
-    const selection = await getSelectionById(id)
-
-    const contracts = await client.get({
-      url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,
-    })
-
-    console.log(contracts)
-
-    for (const contract of contracts) {
-      const dbId = await updateContractInDb(contract)
-      addContractToSelection(dbId, id)
-    }
+    const numContracts = await fetchApiContracts(id)
 
     return res.send({
       data: {
-        contractsRetrieved: contracts.length,
+        contractsRetrieved: numContracts,
       },
     })
   } catch (error) {
