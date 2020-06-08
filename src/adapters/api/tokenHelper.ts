@@ -55,7 +55,6 @@ export const tokenRefresher = <T extends (arg: APIRequest) => any>(
     } catch (error) {
       //If error is invalid access-token, get a new one and retry.
       if (isInvalidAccessTokenError(error)) {
-        console.log('trying to refresh')
         const token = await getNewAccessToken()
 
         await setAccessTokenInDb(token)
@@ -64,7 +63,6 @@ export const tokenRefresher = <T extends (arg: APIRequest) => any>(
         const results = await func(arg)
         return results
       } else {
-        console.log('other error')
         throw error
       }
     }

@@ -17,7 +17,5 @@ export const setAccessTokenInDb = async (
     .returning('id')
     .insert({ token_value: token })
 
-  console.log('put new token in db', id)
-
   return id
 }

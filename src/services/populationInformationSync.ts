@@ -32,7 +32,7 @@ export const syncSelection = async (id: string, user: string) => {
         if (pri) {
           c.last_population_registration_lookup = moment().toDate()
           c.population_registration_information = pri
-          if (isStatusOverrideable(c.status)) {
+          if (!c.status || isStatusOverrideable(c.status)) {
             c.status = getAutomatedStatus(c.contract_information, pri)
           }
           //save contract

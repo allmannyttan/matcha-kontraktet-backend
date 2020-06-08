@@ -148,7 +148,12 @@ const updateContractInDb = async (contract: any): Promise<string> => {
   }
 }
 
-const connectContractToSelection = async (contractDbId: string) => {}
+const addContractToSelection = async (
+  contractDbId: string,
+  selectionId: string
+) => {
+  //db.
+}
 
 export const syncPopulationRegistration = async (
   req: Request,
@@ -185,8 +190,8 @@ export const fetchContracts = async (
     })
 
     for (const contract of contracts) {
-      const dbId = updateContractInDb(contract)
-      // connectContractToSelection(dbId)
+      const dbId = await updateContractInDb(contract)
+      addContractToSelection(dbId, id)
     }
 
     return res.send({
