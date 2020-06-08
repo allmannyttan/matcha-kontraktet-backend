@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Svar>
+  <Error>
+    <Msg id="XML8001" sev="E" runid="0">XML internal error:  Atr: ipaddress= not found</Msg>
+  </Error>
+</Svar>

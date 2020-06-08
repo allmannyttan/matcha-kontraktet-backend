@@ -1,17 +1,18 @@
 export enum ContractStatus {
-  VERIFIED,
-  INVALID,
-  MANUALLY_VERIFIED,
-  UNDER_INVESTIGATION,
+  VERIFIED = 'VERIFIED',
+  INVALID = 'INVALID',
+  MANUALLY_VERIFIED = 'MANUALLY_VERIFIED',
+  UNDER_INVESTIGATION = 'UNDER_INVESTIGATION',
 }
 
-interface ContractInformation {
+export interface ContractInformation {
   pnr: string
   name: string
   address: string
 }
 
-interface PopulationRegistrationInformation {
+export interface PopulationRegistrationInformation {
+  pnr: string
   name: string
   address: string
 }
@@ -22,6 +23,7 @@ export interface Contract {
   population_registration_information?: PopulationRegistrationInformation
   status?: ContractStatus
   comment?: string
+  last_population_registration_lookup: Date | null
 }
 
 export interface Selection {

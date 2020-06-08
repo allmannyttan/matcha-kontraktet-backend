@@ -14,6 +14,14 @@ interface API {
   password: string
 }
 
+interface Syna {
+  host: string
+  username: string
+  customerNumber: string
+  callingIpAddress: string
+  batchSize: number
+}
+
 export interface Config {
   port: number
   postgres: Postgres
@@ -23,6 +31,7 @@ export interface Config {
     maxFailedLoginAttempts: number
   }
   api: API
+  syna: Syna
 }
 
 const config = configPackage({
@@ -47,6 +56,11 @@ const config = configPackage({
       username: 'user',
       password: 'hejhej',
     },
+    syna: {
+      host: 'https://arkivet.syna.se',
+      callingIpAddress: '80.244.206.18',
+      batchSize: 100,
+    },
   },
 })
 
@@ -55,4 +69,5 @@ export default {
   port: config.get('port'),
   postgres: config.get('postgres'),
   api: config.get('api'),
+  syna: config.get('syna'),
 } as Config

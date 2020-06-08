@@ -5,6 +5,13 @@ import HttpException from '@app/exceptions/HttpException'
 import { Select } from 'knex'
 import { Selection } from '../types'
 import { Contract } from '../types'
+import {
+  deleteSelectionById,
+  getSelectionById,
+  getSelections,
+  insertSelection,
+} from '@app/services/db'
+import { syncSelection } from '@app/services/populationInformationSync'
 
 export const createSelection = async (
   req: Request,
@@ -13,11 +20,11 @@ export const createSelection = async (
 ) => {
   try {
     const { selection_term, name } = req.body
-    const [newSelection] = await db('selections').returning('*').insert({
+    const [newSelection] = await insertSelection(
       selection_term,
       name,
-      created_by: 'a logged on user to be written using auth in another branch',
-    })
+      req.auth ? req.auth.username : ''
+    )
 
     return res.send({ data: newSelection })
   } catch (error) {
@@ -32,7 +39,7 @@ export const getAllSelections = async (
   next: NextFunction
 ) => {
   try {
-    const selections = await db.select('*').from('selections')
+    const selections = await getSelections()
 
     return res.send({ data: selections })
   } catch (error) {
@@ -47,8 +54,7 @@ export const getSelection = async (
 ) => {
   try {
     const { id } = req.params
-
-    const selection = await getSelectionFromDb(id)
+    const selection = await getSelectionById(id)
 
     if (!selection) {
       return next(new HttpException(404, 'Selection not found'))
@@ -60,16 +66,6 @@ export const getSelection = async (
   }
 }
 
-const getSelectionFromDb = async (id: string): Promise<Selection> => {
-  const selection = await db
-    .select('*')
-    .from('selections')
-    .where('id', id)
-    .first()
-
-  return selection
-}
-
 export const deleteSelection = async (
   req: Request,
   res: Response,
@@ -78,7 +74,7 @@ export const deleteSelection = async (
   try {
     const { id } = req.params
 
-    await db.select('*').from('selections').where('id', id).del()
+    await deleteSelectionById(id)
 
     return res.send({
       data: {
@@ -154,6 +150,26 @@ const updateContractInDb = async (contract: any): Promise<string> => {
 
 const connectContractToSelection = async (contractDbId: string) => {}
 
+export const syncPopulationRegistration = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params
+
+  try {
+    await syncSelection(id, req.auth ? req.auth.username : '')
+
+    return res.send({
+      data: {
+        success: true,
+      },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export const fetchContracts = async (
   req: Request,
   res: Response,
@@ -162,7 +178,7 @@ export const fetchContracts = async (
   try {
     const { id } = req.params
 
-    const selection = await getSelectionFromDb(id)
+    const selection = await getSelectionById(id)
 
     const contracts = await client.get({
       url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,

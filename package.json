@@ -12,6 +12,7 @@
     "migrate:up": "knex migrate:latest --env dev",
     "migrate:down": "knex migrate:rollback --all --env dev",
     "seed:dev": "knex seed:run --env dev",
+    "reset:dev": "npm run migrate:down && npm run migrate:up && npm run seed:dev",
     "test:ci": "jest --ci --forceExit",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
@@ -42,7 +43,8 @@
     "@iteam/config": "^12.1.1",
     "@types/cors": "^2.8.6",
     "@types/jsonwebtoken": "^8.5.0",
-    "axios": "^0.19.2",
+    "@types/xml2json": "0.11.0",
+    "axios": "0.19.2",
     "body-parser": "^1.19.0",
     "cors": "2.8.5",
     "express": "^4.17.1",
@@ -51,6 +53,9 @@
     "http-errors": "1.7.3",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.1",
-    "pg": "^8.2.1"
+    "moment": "2.26.0",
+    "personnummer": "3.0.2",
+    "pg": "^8.2.1",
+    "xml2json": "0.12.0"
   }
 }
