@@ -15,11 +15,13 @@ import moment from 'moment'
 
 export const syncSelection = async (id: string, user: string) => {
   try {
-    const contracts = await getContractsForSelection(id)
+    const allContracts = await getContractsForSelection(id)
 
-    const validPnrs = contracts
-      .filter((c) => valid(c.contract_information.pnr))
-      .map((c) => c.contract_information.pnr)
+    const contracts = allContracts.filter((c) =>
+      valid(c.contract_information.pnr)
+    )
+
+    const validPnrs = contracts.map((c) => c.contract_information.pnr)
 
     const info = await getPopulationRegistrationInformation(validPnrs)
 
@@ -45,6 +47,7 @@ export const syncSelection = async (id: string, user: string) => {
 
     await setSelectionSynced(id)
   } catch (error) {
+    console.log(error)
     await logSyncFailure(id, user, error)
     throw error
   }

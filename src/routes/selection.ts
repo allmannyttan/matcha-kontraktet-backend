@@ -120,7 +120,7 @@ const updateContractInDb = async (contract: any): Promise<string> => {
             contract.rentalObject &&
             contract.rentalObject.rental &&
             contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0]
+              ? contract.rentalObject.rental.addresses[0].street
               : null,
         },
       })
@@ -152,7 +152,21 @@ const addContractToSelection = async (
   contractDbId: string,
   selectionId: string
 ) => {
-  //db.
+  const selectionContract = await db('selection_contracts')
+    .where({
+      selection_id: selectionId,
+      contract_id: contractDbId,
+    })
+    .first()
+
+  if (!selectionContract) {
+    return await db('selection_contracts').insert({
+      selection_id: selectionId,
+      contract_id: contractDbId,
+    })
+  } else {
+    return
+  }
 }
 
 export const syncPopulationRegistration = async (
@@ -188,6 +202,8 @@ export const fetchContracts = async (
     const contracts = await client.get({
       url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,
     })
+
+    console.log(contracts)
 
     for (const contract of contracts) {
       const dbId = await updateContractInDb(contract)
