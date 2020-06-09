@@ -17,7 +17,7 @@
     "noUnusedParameters": false,
     "outDir": "dist/lib",
     "sourceMap": true,
-    "target": "esnext",
+    "target": "ES2019",
     "strict": true
   },
   "exclude": ["**/__tests__"]
