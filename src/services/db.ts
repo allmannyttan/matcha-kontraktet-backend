@@ -101,7 +101,7 @@ export const updateContract = async (contract: any): Promise<string> => {
             contract.rentalObject &&
             contract.rentalObject.rental &&
             contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0]
+              ? contract.rentalObject.rental.addresses[0].street
               : null,
         },
         contract_id: contract.id,
@@ -116,7 +116,6 @@ export const addContractToSelection = async (
   contractDbId: string,
   selectionId: string
 ) => {
-  console.log('selection_id', selectionId, 'contractDbId', contractDbId)
   const selectionContract = await db('selection_contracts')
     .where({
       selection_id: selectionId,
