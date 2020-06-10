@@ -108,7 +108,7 @@ export const updateContract = async (contract: any): Promise<string> => {
       })
       .returning('id')
 
-    return newId
+    return newId[0]
   }
 }
 
@@ -116,6 +116,7 @@ export const addContractToSelection = async (
   contractDbId: string,
   selectionId: string
 ) => {
+  console.log('selection_id', selectionId, 'contractDbId', contractDbId)
   const selectionContract = await db('selection_contracts')
     .where({
       selection_id: selectionId,
