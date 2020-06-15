@@ -5,6 +5,7 @@ import {
   getSelectionById,
   getSelections,
   insertSelection,
+  getContractsForSelection,
 } from '@app/services/db'
 import { syncSelection } from '@app/services/populationInformationSync'
 import { fetchApiContracts } from '@app/services/fetchApiContracts'
@@ -135,6 +136,24 @@ export const fetchContracts = async (
       data: {
         contractsRetrieved: numContracts,
       },
+    })
+  } catch (error) {
+    return next(error)
+  }
+}
+
+export const getContracts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    const contracts = await getContractsForSelection(id)
+
+    return res.send({
+      data: contracts,
     })
   } catch (error) {
     return next(error)

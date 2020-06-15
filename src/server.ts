@@ -10,6 +10,7 @@ import {
   syncPopulationRegistration,
   createSelection,
   fetchContracts,
+  getContracts,
 } from '@app/routes/selection'
 import { updateContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
@@ -72,6 +73,13 @@ app.get(
   authMiddleware,
   validator.params(getSelectionSchema),
   fetchContracts,
+  errorHandler
+)
+app.get(
+  '/selection/:id/contracts',
+  authMiddleware,
+  validator.params(getSelectionSchema),
+  getContracts,
   errorHandler
 )
 
