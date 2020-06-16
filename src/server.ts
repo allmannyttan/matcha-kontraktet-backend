@@ -12,7 +12,7 @@ import {
   fetchContracts,
   getContracts,
 } from '@app/routes/selection'
-import { updateContract } from '@app/routes/contracts'
+import { updateContract, getContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
 import { createValidator } from 'express-joi-validation'
 import {
@@ -20,6 +20,7 @@ import {
   updateContractSchema,
   deleteSelectionSchema,
   createSelectionSchema,
+  getContractSchema,
 } from '@app/validation/validationSchemas'
 import { routes as authRoutes } from '@app/routes/auth'
 import { authMiddleware } from './middleware/auth'
@@ -83,6 +84,13 @@ app.get(
   errorHandler
 )
 
+app.get(
+  '/contract/:id',
+  authMiddleware,
+  validator.params(getContractSchema),
+  getContract,
+  errorHandler
+)
 app.put(
   '/contract/:id',
   authMiddleware,

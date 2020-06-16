@@ -4,6 +4,10 @@ export const getSelectionSchema = Joi.object({
   id: Joi.string().uuid().required(),
 })
 
+export const getContractSchema = Joi.object({
+  id: Joi.string().uuid().required(),
+})
+
 export const createSelectionSchema = Joi.object({
   selection_term: Joi.string().required(),
   name: Joi.string(),

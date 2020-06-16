@@ -19,3 +19,17 @@ export const updateContract = async (
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
+
+export const getContract = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+    const [contract] = await db('contracts').select('*').where('id', id)
+    return res.send({ data: contract })
+  } catch (error) {
+    return next(new HttpException(500, 'Internal Server Error'))
+  }
+}
