@@ -79,6 +79,7 @@ export const deleteSelection = async (
       },
     })
   } catch (error) {
+    console.error(error.message)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }

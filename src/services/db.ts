@@ -14,6 +14,11 @@ export const insertSelection = async (
 }
 
 export const deleteSelectionById = async (id: string): Promise<void> => {
+  await db
+    .select('*')
+    .from('selection_contracts')
+    .where('selection_id', id)
+    .del()
   return await db.select('*').from('selections').where('id', id).del()
 }
 
