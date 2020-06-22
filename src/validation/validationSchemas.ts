@@ -23,5 +23,5 @@ export const updateContractSchema = Joi.object({
       ...['VERIFIED', 'INVALID', 'MANUALLY_VERIFIED', 'UNDER_INVESTIGATION']
     )
     .required(),
-  comment: Joi.string().allow(''),
+  comment: Joi.string().allow('', null),
 })
