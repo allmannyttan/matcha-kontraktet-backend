@@ -34,12 +34,15 @@ const areAddressesEqual = (
 
 const normalize = (address: string): string => {
   let adr = address
-  adr = adr.replace(/lgh \d+/, '')
-  adr = adr.replace(/\d+tr$/, '')
-  adr = adr.replace(/\sbv$/, '')
-  adr = adr.replace(/\s/, '')
-  adr = adr.replace(/é/, 'e')
-  adr = adr.trim()
+
+  if (adr) {
+    adr = adr.replace(/lgh \d+/, '')
+    adr = adr.replace(/\d+tr$/, '')
+    adr = adr.replace(/\sbv$/, '')
+    adr = adr.replace(/\s/, '')
+    adr = adr.replace(/é/, 'e')
+    adr = adr.trim()
+  }
 
   return adr
 }
