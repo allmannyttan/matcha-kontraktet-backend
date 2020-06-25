@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "ci": "knex migrate:latest --env ci && knex seed:run --env ci && ts-node-dev --no-notify --ignore-watch node_modules -r tsconfig-paths/register src/server.ts",
     "dev": "ts-node-dev --no-notify --ignore-watch node_modules -r tsconfig-paths/register src/server.ts",
     "migrate:up": "knex migrate:latest --env dev",
     "migrate:down": "knex migrate:rollback --all --env dev",
