@@ -19,7 +19,12 @@ export const deleteSelectionById = async (id: string): Promise<void> => {
     .from('selection_contracts')
     .where('selection_id', id)
     .del()
-  return await db.select('*').from('selections').where('id', id).del()
+  await db.select('*').from('selections').where('id', id).del()
+
+  // Remove orphaned contracts
+  return await db.raw(
+    'select * from contracts where id not in (select contract_id from selection_contracts)'
+  )
 }
 
 export const getSelections = async (): Promise<Selection[]> => {
