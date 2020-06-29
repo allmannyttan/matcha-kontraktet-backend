@@ -23,7 +23,7 @@ export const deleteSelectionById = async (id: string): Promise<void> => {
 
   // Remove orphaned contracts
   return await db.raw(
-    'select * from contracts where id not in (select contract_id from selection_contracts)'
+    'delete from contracts where id not in (select contract_id from selection_contracts)'
   )
 }
 
