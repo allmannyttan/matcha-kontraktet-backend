@@ -1,5 +1,5 @@
 
-FROM node:12.16.1-alpine
+FROM node:14.15.1-alpine
 
 # Fixes for Python missing for node-gyp
 # --no-cache: download package index on-the-fly, no need to cleanup afterwards
@@ -11,6 +11,7 @@ RUN apk --no-cache --virtual build-dependencies add \
 
 COPY package.json /app/
 COPY package-lock.json /app/
+COPY @types /app/@types
 COPY tsconfig.json /app/
 COPY knexfile.js /app/
 COPY src /app/src

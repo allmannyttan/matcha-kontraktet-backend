@@ -3,7 +3,7 @@ const { compilerOptions } = require('./tsconfig')
 
 module.exports = {
   collectCoverageFrom: ['**/*.ts', '!**/node_modules/**'],
-  coveragePathIgnorePatterns: ['<rootDir>/dist/', '/node_modules/'],
+  coveragePathIgnorePatterns: ['<rootDir>/dist/', '/node_modules/', '/@types/'],
   globals: {
     'ts-jest': {
       diagnostics: false,
