@@ -9,6 +9,7 @@ import {
 } from '@app/services/db'
 import { syncSelection } from '@app/services/populationInformationSync'
 import { fetchApiContracts } from '@app/services/fetchApiContracts'
+import { onlyInvalid } from '@app/config'
 
 export const createSelection = async (
   req: Request,
@@ -111,7 +112,7 @@ export const syncPopulationRegistration = async (
   const { id } = req.params
 
   try {
-    await syncSelection(id, req.auth ? req.auth.username : '')
+    await syncSelection(id, req.auth ? req.auth.username : '', onlyInvalid)
 
     return res.send({
       data: {

@@ -32,6 +32,7 @@ export interface Config {
   }
   api: API
   syna: Syna
+  onlyInvalid: boolean
 }
 
 const config = configPackage({
@@ -61,6 +62,7 @@ const config = configPackage({
       callingIpAddress: '80.244.206.18',
       batchSize: 100,
     },
+    onlyInvalid: false,
   },
 })
 

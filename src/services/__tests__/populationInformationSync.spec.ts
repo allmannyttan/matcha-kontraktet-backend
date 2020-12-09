@@ -172,7 +172,7 @@ describe('#syncSelection', () => {
     }
   })
 
-  test('it does not save valids when you set onlyInvalid', async () => {
+  test('it does NOT save valids when you set onlyInvalid', async () => {
     const pnr = '191212121212'
     const contract_information = { pnr, address: 'an address' }
     const population_registration_information = {
@@ -180,28 +180,7 @@ describe('#syncSelection', () => {
       pnr: '191212121212',
     }
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
-    ;(areAddressesEqual as jest.Mock).mockReturnValue(false)
-    ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
-    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
-      { contract_information, status: 'CAN BE OVERRIDDEN' },
-    ])
-    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
-      population_registration_information,
-    ])
-
-    await syncSelection('id', 'user', true)
-    expect(saveContract).toBeCalledTimes(0)
-  })
-
-  test('it does not save invalids when you set onlyInvalid', async () => {
-    const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
-    const population_registration_information = {
-      address: 'pri address',
-      pnr: '191212121212',
-    }
-    ;(getAutomatedStatus as jest.Mock).mockReturnValue('MOCK STATUS')
-    ;(areAddressesEqual as jest.Mock).mockReturnValue(false)
+    ;(areAddressesEqual as jest.Mock).mockReturnValue(true)
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
@@ -222,7 +201,7 @@ describe('#syncSelection', () => {
       pnr: '191212121212',
     }
     ;(getAutomatedStatus as jest.Mock).mockReturnValue(false)
-    ;(areAddressesEqual as jest.Mock).mockReturnValue(true)
+    ;(areAddressesEqual as jest.Mock).mockReturnValueOnce(false)
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
@@ -232,6 +211,6 @@ describe('#syncSelection', () => {
     ])
 
     await syncSelection('id', 'user', true)
-    expect(saveContract).toBeCalledTimes(0)
+    expect(saveContract).toBeCalledTimes(1)
   })
 })
