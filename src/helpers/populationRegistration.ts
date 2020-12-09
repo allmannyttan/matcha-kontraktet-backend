@@ -21,7 +21,7 @@ export const isStatusOverrideable = (status: ContractStatus): boolean => {
   return !writeprotected.includes(status)
 }
 
-const areAddressesEqual = (
+export const areAddressesEqual = (
   contract: ContractInformation,
   pri: PopulationRegistrationInformation
 ): boolean => {

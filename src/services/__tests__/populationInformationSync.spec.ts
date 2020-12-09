@@ -2,6 +2,7 @@ import { getPopulationRegistrationInformation } from '@app/adapters/syna'
 import {
   getAutomatedStatus,
   isStatusOverrideable,
+  areAddressesEqual,
 } from '@app/helpers/populationRegistration'
 import {
   getContractsForSelection,
@@ -169,5 +170,68 @@ describe('#syncSelection', () => {
     } catch (e) {
       expect(logSyncFailure).toHaveBeenCalledWith('id', 'user', e)
     }
+  })
+
+  test('it does not save valids when you set onlyInvalid', async () => {
+    const pnr = '191212121212'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      address: 'pri address',
+      pnr: '191212121212',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
+    ;(areAddressesEqual as jest.Mock).mockReturnValue(false)
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { contract_information, status: 'CAN BE OVERRIDDEN' },
+    ])
+    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+
+    await syncSelection('id', 'user', true)
+    expect(saveContract).toBeCalledTimes(0)
+  })
+
+  test('it does not save invalids when you set onlyInvalid', async () => {
+    const pnr = '191212121212'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      address: 'pri address',
+      pnr: '191212121212',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue('MOCK STATUS')
+    ;(areAddressesEqual as jest.Mock).mockReturnValue(false)
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { contract_information, status: 'CAN BE OVERRIDDEN' },
+    ])
+    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+
+    await syncSelection('id', 'user', true)
+    expect(saveContract).toBeCalledTimes(0)
+  })
+
+  test('it does save invalids when you set onlyInvalid', async () => {
+    const pnr = '191212121212'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      address: 'pri address',
+      pnr: '191212121212',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue(false)
+    ;(areAddressesEqual as jest.Mock).mockReturnValue(true)
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { contract_information, status: 'CAN BE OVERRIDDEN' },
+    ])
+    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+
+    await syncSelection('id', 'user', true)
+    expect(saveContract).toBeCalledTimes(0)
   })
 })

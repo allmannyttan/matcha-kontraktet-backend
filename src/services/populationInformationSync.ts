@@ -3,6 +3,7 @@ import { toSynaFormat, valid } from '@app/helpers/personnummer'
 import {
   getAutomatedStatus,
   isStatusOverrideable,
+  areAddressesEqual,
 } from '@app/helpers/populationRegistration'
 import {
   getContractsForSelection,
@@ -13,7 +14,11 @@ import {
 } from '@app/services/db'
 import moment from 'moment'
 
-export const syncSelection = async (id: string, user: string) => {
+export const syncSelection = async (
+  id: string,
+  user: string,
+  onlyInvalid = false
+) => {
   try {
     const allContracts = await getContractsForSelection(id)
 
@@ -31,14 +36,18 @@ export const syncSelection = async (id: string, user: string) => {
           (i) =>
             toSynaFormat(i.pnr) === toSynaFormat(c.contract_information.pnr)
         )
+
         if (pri) {
-          c.last_population_registration_lookup = moment().toDate()
-          c.population_registration_information = pri
-          if (!c.status || isStatusOverrideable(c.status)) {
-            c.status = getAutomatedStatus(c.contract_information, pri)
+          const isValid = areAddressesEqual(c.contract_information, pri)
+          if (!onlyInvalid || !isValid) {
+            c.last_population_registration_lookup = moment().toDate()
+            c.population_registration_information = pri
+            if (!c.status || isStatusOverrideable(c.status)) {
+              c.status = getAutomatedStatus(c.contract_information, pri)
+            }
+            //save contract
+            await saveContract(c)
           }
-          //save contract
-          await saveContract(c)
         }
       })
     )
