@@ -27,6 +27,10 @@ export const deleteSelectionById = async (id: string): Promise<void> => {
   )
 }
 
+export const deleteContractById = async (id: string): Promise<void> => {
+  return db.where('id', id).del()
+}
+
 export const getSelections = async (): Promise<Selection[]> => {
   return await db.select('*').from('selections')
 }

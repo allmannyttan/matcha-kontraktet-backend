@@ -10,6 +10,7 @@ import {
   logSyncSuccess,
   saveContract,
   setSelectionSynced,
+  deleteContractById,
 } from '@app/services/db'
 import { syncSelection } from '../populationInformationSync'
 
@@ -212,5 +213,26 @@ describe('#syncSelection', () => {
 
     await syncSelection('id', 'user', true)
     expect(saveContract).toBeCalledTimes(1)
+  })
+
+  test('it deletes valids when only invalids', async () => {
+    const pnr = '191212121212'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      address: 'pri address',
+      pnr: '191212121212',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
+    ;(areAddressesEqual as jest.Mock).mockReturnValue(true)
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { contract_information, id: '1339', status: 'CAN BE OVERRIDDEN' },
+    ])
+    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+
+    await syncSelection('id', 'user', true)
+    expect(deleteContractById).toBeCalledWith('1339')
   })
 })

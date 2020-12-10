@@ -11,6 +11,7 @@ import {
   logSyncSuccess,
   saveContract,
   setSelectionSynced,
+  deleteContractById,
 } from '@app/services/db'
 import moment from 'moment'
 
@@ -40,7 +41,9 @@ export const syncSelection = async (
         if (pri) {
           const isValid = areAddressesEqual(c.contract_information, pri)
 
-          if (!onlyInvalid || !isValid) {
+          if (isValid && onlyInvalid) {
+            await deleteContractById(c.id)
+          } else {
             c.last_population_registration_lookup = moment().toDate()
             c.population_registration_information = pri
             if (!c.status || isStatusOverrideable(c.status)) {
