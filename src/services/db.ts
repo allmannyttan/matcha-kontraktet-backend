@@ -84,7 +84,7 @@ export const setSelectionSynced = async (id: string) => {
 }
 
 export const updateContract = async (contract: any): Promise<string> => {
-  let contractInDb = await db<Contract>('contracts')
+  const contractInDb = await db<Contract>('contracts')
     .where('contract_id', contract.id)
     .first()
 
@@ -94,36 +94,28 @@ export const updateContract = async (contract: any): Promise<string> => {
         contract_information: {
           name: contract.partners[0].tenant.fullName,
           pnr: contract.partners[0].tenant.socialSecurityNumber,
-          address:
-            contract.rentalObject &&
-            contract.rentalObject.rental &&
-            contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0].street
-              : null,
+          address: contract.rentalObject?.rental?.addresses?.[0].street || null,
         },
+        start_date: contract.initialDate,
       })
       .where('id', contractInDb.id)
 
     return contractInDb.id
-  } else {
-    const newId: string = await db('contracts')
-      .insert({
-        contract_information: {
-          name: contract.partners[0].tenant.fullName,
-          pnr: contract.partners[0].tenant.socialSecurityNumber,
-          address:
-            contract.rentalObject &&
-            contract.rentalObject.rental &&
-            contract.rentalObject.rental.addresses
-              ? contract.rentalObject.rental.addresses[0].street
-              : null,
-        },
-        contract_id: contract.id,
-      })
-      .returning('id')
-
-    return newId[0]
   }
+
+  const [newId]: string[] = await db('contracts')
+    .insert({
+      contract_information: {
+        name: contract.partners[0].tenant.fullName,
+        pnr: contract.partners[0].tenant.socialSecurityNumber,
+        address: contract.rentalObject?.rental?.addresses?.[0].street || null,
+      },
+      contract_id: contract.id,
+      start_date: contract.initialDate,
+    })
+    .returning('id')
+
+  return newId
 }
 
 export const addContractToSelection = async (

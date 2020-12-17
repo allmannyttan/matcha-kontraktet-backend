@@ -54,8 +54,8 @@ const config = configPackage({
     },
     api: {
       baseUrl: 'http://localhost:4000/',
-      username: 'user',
-      password: 'hejhej',
+      username: 'test',
+      password: 'kalas',
     },
     syna: {
       host: 'https://arkivet.syna.se',
