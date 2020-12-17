@@ -22,6 +22,14 @@ interface Syna {
   batchSize: number
 }
 
+interface Creditsafe {
+  host: string
+  getDataPath: string
+  username: string
+  password: string
+  basicBlock: string
+}
+
 export interface Config {
   port: number
   postgres: Postgres
@@ -31,7 +39,9 @@ export interface Config {
     maxFailedLoginAttempts: number
   }
   api: API
+  populationRegistrationProvider: 'syna' | 'creditsafe'
   syna: Syna
+  creditsafe: Creditsafe
   onlyInvalid: boolean
 }
 
@@ -57,6 +67,14 @@ const config = configPackage({
       username: 'test',
       password: 'kalas',
     },
+    populationRegistrationProvider: 'syna',
+    creditsafe: {
+      host: 'http://testwebservice.creditsafe.se',
+      username: '',
+      password: '',
+      basicBlock: '',
+      getDataPath: '/GetData/getdata.asmx?wsdl',
+    },
     syna: {
       host: 'https://arkivet.syna.se',
       callingIpAddress: '80.244.206.18',
@@ -72,4 +90,6 @@ export default {
   postgres: config.get('postgres'),
   api: config.get('api'),
   syna: config.get('syna'),
+  creditsafe: config.get('creditsafe'),
+  populationRegistrationProvider: config.get('populationRegistrationProvider'),
 } as Config

@@ -1,7 +1,7 @@
 import { PopulationRegistrationInformation } from '@app/types'
 import { getSynaInformation } from './syna'
 import config from '@app/config'
-import { toSynaFormat } from '@app/helpers/personnummer'
+import { format } from '@app/helpers/personnummer'
 
 export const getSynaBatches = async (
   pnrs: string[],
@@ -34,33 +34,6 @@ export const getSynaBatches = async (
   return arrObjekt
 }
 
-export const getPopulationRegistrationInformation = async (
-  pnrs: string[]
-): Promise<PopulationRegistrationInformation[]> => {
-  try {
-    const formatted = pnrs.map(toSynaFormat)
-
-    const synaInfo = await getSynaBatches(formatted, config.syna.batchSize)
-
-    let result: PopulationRegistrationInformation[] = []
-
-    if (synaInfo) {
-      result = toPopulationRegistrationInformationArray(synaInfo)
-    }
-
-    return result
-  } catch (error) {
-    console.error(error)
-    return Promise.reject(error)
-  }
-}
-
-const toPopulationRegistrationInformationArray = (
-  objektlista: syna.Omfragad[]
-): PopulationRegistrationInformation[] => {
-  return objektlista.map((obj) => toPopulationRegistrationInformation(obj))
-}
-
 const toPopulationRegistrationInformation = (
   omfragad: syna.Omfragad
 ): PopulationRegistrationInformation => {
@@ -78,4 +51,23 @@ const toPopulationRegistrationInformation = (
   }
 
   return pri
+}
+
+export const getInformation = async (
+  pnrs: string[]
+): Promise<PopulationRegistrationInformation[]> => {
+  try {
+    const formatted = pnrs.map(format)
+
+    const synaInfo = await getSynaBatches(formatted, config.syna.batchSize)
+
+    if (!synaInfo) {
+      return []
+    }
+
+    return synaInfo.map(toPopulationRegistrationInformation)
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
 }

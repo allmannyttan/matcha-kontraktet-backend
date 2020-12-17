@@ -2,10 +2,10 @@
 import personnummer from 'personnummer'
 
 /**
- * Formats personnummer to yymmddxxx, the format used by Syna.
+ * Formats personnummer to yymmddxxxx.
  * @param pnrs an array of valid personnummer
  */
-export const toSynaFormat = (pnr: string): string => {
+export const format = (pnr: string): string => {
   try {
     return personnummer.parse(pnr).format().replace('-', '').replace('+', '')
   } catch (error) {
