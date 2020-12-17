@@ -90,6 +90,7 @@ export default {
   postgres: config.get('postgres'),
   api: config.get('api'),
   syna: config.get('syna'),
+  onlyInvalid: config.get('onlyInvalid'),
   creditsafe: config.get('creditsafe'),
   populationRegistrationProvider: config.get('populationRegistrationProvider'),
 } as Config
