@@ -20,7 +20,13 @@ export const deleteSelectionSchema = Joi.object({
 export const updateContractSchema = Joi.object({
   status: Joi.string()
     .valid(
-      ...['VERIFIED', 'INVALID', 'MANUALLY_VERIFIED', 'UNDER_INVESTIGATION']
+      ...[
+        'VERIFIED',
+        'INVALID',
+        'VERIFIED_SUBLETTING',
+        'MANUALLY_VERIFIED',
+        'UNDER_INVESTIGATION',
+      ]
     )
     .required(),
   comment: Joi.string().allow('', null),
