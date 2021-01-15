@@ -4,11 +4,15 @@ import { db } from '@app/adapters/postgres'
 export const insertSelection = async (
   selection_term: string,
   name: string,
+  from: Date | null,
+  to: Date | null,
   created_by: string
 ): Promise<Selection[]> => {
   return await db('selections').returning('*').insert({
     selection_term,
     name,
+    from,
+    to,
     created_by,
   })
 }

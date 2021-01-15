@@ -1,5 +1,4 @@
 import { client } from '@app/adapters/api'
-import { Contract } from '../types'
 import {
   getSelectionById,
   updateContract,
@@ -7,10 +6,14 @@ import {
 } from '@app/services/db'
 
 export const fetchApiContracts = async (selectionId: string) => {
-  const selection = await getSelectionById(selectionId)
+  const { selection_term, from, to } = await getSelectionById(selectionId)
 
   const contracts = await client.get({
-    url: `leasecontracts/?rentalid=${selection.selection_term}*&includetenants=true&includerentals=true`,
+    url: `leasecontracts/?includetenants=true&includerentals=true${
+      selection_term ? `&rentalid=${selection_term}*` : ''
+    }${from ? `&from=${new Date(from).toISOString()}` : ''}${
+      to ? `&to=${new Date(to).toISOString()}` : ''
+    }`,
   })
 
   for (const contract of contracts) {

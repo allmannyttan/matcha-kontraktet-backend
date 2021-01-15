@@ -17,10 +17,12 @@ export const createSelection = async (
   next: NextFunction
 ) => {
   try {
-    const { selection_term, name } = req.body
+    const { selection_term, name, from, to } = req.body
     const [newSelection] = await insertSelection(
       selection_term,
       name,
+      from,
+      to,
       req.auth ? req.auth.username : ''
     )
 

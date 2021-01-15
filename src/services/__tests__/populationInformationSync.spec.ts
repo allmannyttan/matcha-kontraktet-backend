@@ -182,7 +182,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+    ;(getInformation as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -203,7 +203,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+    ;(getInformation as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -224,7 +224,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, id: '1339', status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getPopulationRegistrationInformation as jest.Mock).mockResolvedValue([
+    ;(getInformation as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 

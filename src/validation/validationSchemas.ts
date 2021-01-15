@@ -9,8 +9,13 @@ export const getContractSchema = Joi.object({
 })
 
 export const createSelectionSchema = Joi.object({
-  selection_term: Joi.string().required(),
+  selection_term: Joi.string().when('from', {
+    is: null,
+    then: Joi.when('to', { is: null, then: Joi.required() }),
+  }),
   name: Joi.string(),
+  from: Joi.date().optional(),
+  to: Joi.date().optional(),
 })
 
 export const deleteSelectionSchema = Joi.object({

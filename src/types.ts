@@ -31,6 +31,8 @@ export interface Selection {
   id: string
   name: string
   selection_term: string
+  from: Date | null
+  to: Date | null
   contracts: Contract[]
   last_population_registration_lookup: Date | null
   created_by: string
