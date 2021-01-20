@@ -28,7 +28,7 @@ describe('#fetchApiContracts', () => {
     await fetchApiContracts('id')
     expect(client.get).toHaveBeenCalledWith({
       url:
-        'leasecontracts/?rentalid=foo*&includetenants=true&includerentals=true',
+        'leasecontracts/?includetenants=true&includerentals=true&rentalid=foo*',
     })
   })
 

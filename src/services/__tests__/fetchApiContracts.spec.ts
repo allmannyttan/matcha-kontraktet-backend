@@ -36,7 +36,7 @@ describe('fetchApiContracts', () => {
 
     expect(client.get).toBeCalledWith({
       url:
-        'leasecontracts/?rentalid=2*&includetenants=true&includerentals=true',
+        'leasecontracts/?includetenants=true&includerentals=true&rentalid=2*',
     })
   })
 
