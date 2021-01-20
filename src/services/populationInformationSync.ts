@@ -66,7 +66,7 @@ export const syncSelection = async (
         const isValid = areAddressesEqual(c.contract_information, pri)
 
         if (isValid && onlyInvalid) {
-          await deleteContractById(c.id)
+          await deleteContractById(c.id, id)
         } else {
           //save contract
           await saveContract({
