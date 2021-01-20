@@ -229,6 +229,6 @@ describe('#syncSelection', () => {
     ])
 
     await syncSelection('id', 'user', true)
-    expect(deleteContractById).toBeCalledWith('1339')
+    expect(deleteContractById).toBeCalledWith('1339', 'id')
   })
 })
