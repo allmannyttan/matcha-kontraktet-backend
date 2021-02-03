@@ -7,6 +7,8 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.error(error)
+
   const status = error.status || 500
   const message = error.message || 'Something went wrong'
   res.status(status).send({

@@ -1,5 +1,6 @@
 import express, { Application, Response } from 'express'
 import bodyParser from 'body-parser'
+import timeout from 'connect-timeout'
 import config from '@app/config'
 import cors from 'cors'
 import {
@@ -100,6 +101,8 @@ app.put(
 )
 
 authRoutes(app)
+
+app.use(timeout('300s'))
 
 app.listen({ port: config.port }, () =>
   console.log(`🚀 Server ready at http://localhost:${config.port}`)
