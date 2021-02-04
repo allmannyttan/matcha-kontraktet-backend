@@ -24,8 +24,10 @@ export const getSynaBatches = async (
     }
 
     if (root.Svar.Error) {
-      console.error(root.Svar.Error)
-      throw new Error('Error in Syna integration: ' + root.Svar.Error.Msg._t)
+      console.error('An error occurred', console.log(root.Svar.Error))
+      // Apparently errors can occur with some lookups, while returning the rest correct... Let's not abort
+      // the whole batch right now. May need a check on which error has occured.
+      // throw new Error('Error in Syna integration: ' + root.Svar.Error.Msg._t)
     }
 
     fetched += batch.length

@@ -105,6 +105,15 @@ export const updateContract = async (contract: any): Promise<string> => {
     .where('contract_id', contract.id)
     .first()
 
+  let address = contract.rentalObject?.rental?.addresses?.[0].street
+  if (!address) {
+    console.log(
+      'Empty address',
+      contract.id,
+      JSON.stringify(contract.rentalObject?.rental, null, 2)
+    )
+  }
+
   if (contractInDb) {
     await db('contracts')
       .update({
