@@ -105,7 +105,7 @@ export const updateContract = async (contract: any): Promise<string> => {
     .where('contract_id', contract.id)
     .first()
 
-  let address = contract.rentalObject?.rental?.addresses?.[0].street
+  let address = contract.rentalObject?.rental?.addresses?.[0]?.street
   if (!address) {
     console.log(
       'Empty address',
@@ -120,7 +120,8 @@ export const updateContract = async (contract: any): Promise<string> => {
         contract_information: {
           name: contract.partners?.[0]?.tenant?.fullName,
           pnr: contract.partners?.[0]?.tenant?.socialSecurityNumber,
-          address: contract.rentalObject?.rental?.addresses?.[0].street || null,
+          address:
+            contract.rentalObject?.rental?.addresses?.[0]?.street || null,
         },
         start_date: contract.initialDate,
       })
@@ -134,7 +135,7 @@ export const updateContract = async (contract: any): Promise<string> => {
       contract_information: {
         name: contract.partners?.[0]?.tenant?.fullName,
         pnr: contract.partners?.[0]?.tenant?.socialSecurityNumber,
-        address: contract.rentalObject?.rental?.addresses?.[0].street || null,
+        address: contract.rentalObject?.rental?.addresses?.[0]?.street || null,
       },
       contract_id: contract.id,
       start_date: contract.initialDate,
