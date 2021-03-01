@@ -25,7 +25,7 @@ export const areAddressesEqual = (
   contract: ContractInformation,
   pri: PopulationRegistrationInformation
 ): boolean => {
-  //Normalize addresses for comparison according to Vätterhem needs
+  //Normalize addresses for comparison
   let contractAddress = normalize(contract.address)
   let priAddress = normalize(pri.address)
 
@@ -33,7 +33,7 @@ export const areAddressesEqual = (
 }
 
 const normalize = (address: string): string => {
-  let adr = address
+  let adr = address.toLowerCase()
 
   if (adr) {
     adr = adr.replace(/lgh \d+/, '')

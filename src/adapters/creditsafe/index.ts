@@ -19,6 +19,8 @@ const creditsafeXML = (pnr: string) => dedent`
 </GetDataBySecure>
 `
 
+let count = 0
+
 const getAddress = async (
   pnr: string
 ): Promise<PopulationRegistrationInformation | null> => {
@@ -37,15 +39,14 @@ const getAddress = async (
         }
         if (res.GetDataBySecureResult.Error) {
           console.error(res.GetDataBySecureResult.Error)
-          resolve(null)
-          //          return reject(new Error('Person not found'))
+          // Not the prettiest, but rejecting will fail the entire Promise.all in getInformation
+          return resolve(null)
         }
 
         const data =
           res.GetDataBySecureResult.Parameters.diffgram.NewDataSet
             .GETDATA_RESPONSE
 
-        console.log(data)
         resolve({
           pnr,
           name: `${data.FIRST_NAME} ${data.LAST_NAME}`,
@@ -62,11 +63,13 @@ export const getInformation = async (
   try {
     let info = await Promise.all(pnrs.map(format).map(getAddress))
 
-    let info2 = info.filter(
+    // Nulls in the list are people not found in the lookup, just
+    // take them out of what we return.
+    let filteredInfo = info.filter(
       (x): x is PopulationRegistrationInformation => x !== null
     )
 
-    return info2 || []
+    return filteredInfo || []
   } catch (error) {
     console.error(error)
     return Promise.reject(error)
