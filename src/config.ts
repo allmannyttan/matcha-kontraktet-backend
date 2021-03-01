@@ -69,10 +69,10 @@ const config = configPackage({
     },
     populationRegistrationProvider: 'syna',
     creditsafe: {
-      host: 'http://testwebservice.creditsafe.se',
+      host: 'http://webservice.creditsafe.se',
       username: '',
       password: '',
-      basicBlock: '',
+      basicBlock: 'MOMEN_P_BASIC',
       getDataPath: '/GetData/getdata.asmx?wsdl',
     },
     syna: {
