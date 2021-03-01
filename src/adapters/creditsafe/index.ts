@@ -21,7 +21,7 @@ const creditsafeXML = (pnr: string) => dedent`
 
 const getAddress = async (
   pnr: string
-): Promise<PopulationRegistrationInformation> => {
+): Promise<PopulationRegistrationInformation | null> => {
   const client = await createClientAsync(
     `${config.creditsafe.host}${config.creditsafe.getDataPath}`
   )
@@ -36,12 +36,16 @@ const getAddress = async (
           return reject(err)
         }
         if (res.GetDataBySecureResult.Error) {
-          return reject(new Error('Person not found'))
+          console.error(res.GetDataBySecureResult.Error)
+          resolve(null)
+          //          return reject(new Error('Person not found'))
         }
 
         const data =
           res.GetDataBySecureResult.Parameters.diffgram.NewDataSet
             .GETDATA_RESPONSE
+
+        console.log(data)
         resolve({
           pnr,
           name: `${data.FIRST_NAME} ${data.LAST_NAME}`,
@@ -56,9 +60,13 @@ export const getInformation = async (
   pnrs: string[]
 ): Promise<PopulationRegistrationInformation[]> => {
   try {
-    const info = await Promise.all(pnrs.map(format).map(getAddress))
+    let info = await Promise.all(pnrs.map(format).map(getAddress))
 
-    return info || []
+    let info2 = info.filter(
+      (x): x is PopulationRegistrationInformation => x !== null
+    )
+
+    return info2 || []
   } catch (error) {
     console.error(error)
     return Promise.reject(error)
