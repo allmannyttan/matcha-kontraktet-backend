@@ -10,7 +10,7 @@ on:
     tags:
       - v*
 env:
-  IMAGE_NAME_BACKEND: sublet-detector-backend
+  IMAGE_NAME_BACKEND: matcha-kontraktet-backend
 jobs:
   build-backend:
     name: Build and test backend
