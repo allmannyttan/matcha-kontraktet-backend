@@ -1,7 +1,93 @@
 dte: false
-
+postgresql:
+  global:
+    postgresql: {}
+  fullnameOverride: matcha
+  existingSecret: matcha-postgresql
+  image:
+    debug: false
+    pullPolicy: Always
+  volumePermissions:
+    enabled: true
+    image:
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      tag: stretch
+    securityContext:
+      runAsUser: "auto"
+  shmVolume:
+    chmod:
+      enabled: false
+  containerSecurityContext:
+    enabled: false    
+  securityContext:
+    enabled: false
+    fsGroup: 1001
+    runAsUser: 1001
+  serviceAccount:
+    enabled: true
+  replication:
+    applicationName: my_application
+    enabled: false
+    numSynchronousReplicas: 0
+    password: repl_password
+    slaveReplicas: 1
+    synchronousCommit: "off"
+    user: repl_user
+  # postgresqlUsername: "admin"
+  usePasswordFile: false
+  postgresqlDatabase: "backend-api"
+  postgresqlDataDir: /bitnami/postgresql/data
+  sealedSecret:
+    enabled: true
+    annotations: 
+       sealedsecrets.bitnami.com/cluster-wide: "true"
+    files:
+     - name: matcha-postgresql
+       encryptedData:
+          postgresql-password: AgA1U0E+BAaQMk8SzXMAMlewu+AcbHZjg/az24OiLFnRqV2hMa48wnGMnzz9AJ0ml05cQXpBVWXZfZlIElAT45TTNoewfasKwz0aotPl6iODj9uAq65Ff1TJOYVSHOWRAzeggzS0/QyFtow8be7gY/4Tg5sF6TAIjYDxhWWyNpKWWJyVx83Cbk9c+osHkmU6/UCE0hyfd3hlGOw0KiUMM07e4AluGVHfpkqW+PKfecYOEvXwWfqeMDheD7JtcWYfA/1Ki+gHNVOBBfoZev54A5JxloGifNFJZH5mYlzz6NVHm9lFMJoDlrK4HCBp8xGDYWHy2HOtha7Z+yBBBSwRZe4dwLrL6l/4dOT8t7eHQ9HDe4uTQ8e/1DLPLybXqlMyFQjkBG6uxuGjbHretH94M451poRr6ArNHG7RdPPB6iBuMrWh6u7kSOWN+mMl4uW6lUxjhsDyEy0acwQDiRpSZi9Qrug/XMsOQwwF8rWVlxhn2V7Gnw6dN0DWTYW1UCvKyUYMKGNmKnSdRtrr5WL3rN5xxlRh8lqOn01UlUBExUxzHvPhPJNBaaxcF6tgat9jQccIeSlhy39uIKp9hv/hRmVvIAIS0fdiZn9XHv+bOEE1WeciU5060a4NoD934GqkVwvMoI8MU2oCjprVYD6jhJErrjrlVO0Q8OUORXDXBNpw72TOV61Z81NLvpZZfjPSWvF2aU2G/+ffbz6Q
+          postgresql-postgres-password: AgBh7Ti24PR+tbJEUi6R7MeTWSxyS1Peh+TqZj4nW8h1r1JtGRYWuJ94xoWIfQXaLmEvO+lh3FMob+CIAF98n6MSJ7z22Zk+o26tr8r6a7EVShkmj9G9JELk/CWKkgWIZD95FoGXs4zIJkXzS+1Tmi4hlqp4zbI2dAHckRGyN1LC5AmbkZE8l5nFeG1AIsIIHVD7URx0eUMb6uJtpwEfkxYCDz9W512JEu08WH/d3lBt7x3durUqOScLOeDCoFZW+v5jEyAWVRPZU6+ZCg/I1rW0tbWy4FsFPrKbAMC4PJ58FnBnJYZMgO1qhJ7JWWAzFmt7KHYWlkfI5m7hMHFZ2HI7jYCuafO4YnVp6lttQ0LpZ0VYFe0uhusJ7RURoSN6MXdeWOW9KC6XejdvlLyQDtc7qh97HDSoUR4DIYQqCMTg0F3SJDlBMdlC2drEUaZd+j4/khvUTcaIjnHTvzN4DW2XFkU/x6cAwOr1RjK0QhQYaEz19w7I6bCt3/Qi+O4FmntJunNl6eT/gqYI/sqddkU7LUnqC5kWOWv9zY3DgsZvqzxfxLaHKymopIFJoOmUmNm+eAHBTqSDzV7lPepqFzkywCSdUWkLR4wiijCGmEfz2kLeYweduxJSB1UXfsM3NSCFcyBQ6splwkmWjbfkNJIvJyEYg90JG1z5ZuUaA44/6lCsArIaiCxNx95NbATyRNE/JkPInwpekeXkxQ==
+  service:
+    annotations: {}
+    port: 5432
+    type: ClusterIP
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    enabled: true
+    mountPath: /bitnami/postgresql
+    size: 2Gi
+    storageClass: stakater 
+    subPath: ""
+  updateStrategy:
+    type: RollingUpdate
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  networkPolicy:
+    allowExternal: true
+    enabled: false
+  livenessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  readinessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
 application: 
- applicationName: "sulussen"
+ applicationName: "macha"
  # tenant operator space
  space:
    enabled: true
@@ -27,6 +113,24 @@ application:
      requests:
        memory: 128Mi
        cpu: 0.1
+   env:
+   - name: POSTGRES__HOST
+     value: matcha-postgresql
+   - name: POSTGRES__USER
+     value: postgres
+   - name: POSTGRES__PASSWORD
+     valueFrom:
+       secretKeyRef:
+         name: matcha-postgresql
+         key: postgresql-password
+   - name: POSTGRES__DATABASE
+     value: api-db
+   - name: POSTGRES__PORT
+     value: '5432'
+   - name: DATABASE_URL
+     value: postgres://$(POSTGRES__USER):$(POSTGRES__PASSWORD)@matcha-postgresql:5432/api-db
+   - name: POSTGRES__HOST
+     value: matcha-postgresql
    probes:
      readinessProbe:
        failureThreshold: 3
