@@ -124,11 +124,11 @@ application:
          name: matcha-postgresql
          key: postgresql-password
    - name: POSTGRES__DATABASE
-     value: api-db
+     value: backend-api
    - name: POSTGRES__PORT
      value: '5432'
    - name: DATABASE_URL
-     value: postgres://$(POSTGRES__USER):$(POSTGRES__PASSWORD)@matcha-postgresql:5432/api-db
+     value: postgres://$(POSTGRES__USER):$(POSTGRES__PASSWORD)@matcha-postgresql:5432/backend-api
    - name: POSTGRES__HOST
      value: matcha-postgresql
    probes:
