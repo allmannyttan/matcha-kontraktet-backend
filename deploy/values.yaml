@@ -1,0 +1,60 @@
+dte: false
+
+application: 
+ applicationName: "sulussen"
+ # tenant operator space
+ space:
+   enabled: true
+   tenant: "allmannyttan"
+   annotations:
+      argocd.argoproj.io/sync-wave: "-1"
+   additionalLabels:
+      kind: pr
+      team: allmanytta
+
+ # kubernetes deployment
+ deployment:
+   annotations:
+   volumes: {}
+   imagePullSecrets: nexus-docker-config-forked   
+   image:
+     repository: IMAGE
+     tag: TAG
+   resources: 
+     limits:
+       memory: 1Gi 
+       cpu: 0.5
+     requests:
+       memory: 128Mi
+       cpu: 0.1
+   probes:
+     readinessProbe:
+       failureThreshold: 3
+       periodSeconds: 60
+       successThreshold: 1
+       timeoutSeconds: 1
+       initialDelaySeconds: 10
+       httpGet:
+         path: /health
+         port: 4000
+     livenessProbe:
+       failureThreshold: 3
+       periodSeconds: 60
+       successThreshold: 1
+       timeoutSeconds: 1
+       initialDelaySeconds: 10
+       httpGet:
+         path: /health
+         port: 4000
+ # kubernetes service         
+ service:
+   ports:
+   - port: 4000
+     name: http
+     targetPort: 4000
+ # kubernetes rbac
+ rbac:
+   create: true
+   serviceAccount:
+     create: true
+     enabled: true
