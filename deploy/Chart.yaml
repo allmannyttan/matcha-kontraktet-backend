@@ -1,5 +1,5 @@
 apiVersion: v2
-name: matcha-backend
+name:  matcha-kontraktet-backend
 description: A Helm chart for Kubernetes
 dependencies:
 - name: application
