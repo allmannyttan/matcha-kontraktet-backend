@@ -139,7 +139,7 @@ application:
        timeoutSeconds: 1
        initialDelaySeconds: 10
        httpGet:
-         path: /health
+         path: /
          port: 9000
      livenessProbe:
        failureThreshold: 3
@@ -148,7 +148,7 @@ application:
        timeoutSeconds: 1
        initialDelaySeconds: 10
        httpGet:
-         path: /health
+         path: /
          port: 9000
  # kubernetes service         
  service:
