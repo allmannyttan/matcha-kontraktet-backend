@@ -78,7 +78,7 @@ postgresql:
     successThreshold: 1
     timeoutSeconds: 5
 application: 
- applicationName: "macha"
+ applicationName: "mk-backend"
  # tenant operator space
  space:
    enabled: true
