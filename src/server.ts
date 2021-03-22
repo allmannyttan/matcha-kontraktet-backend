@@ -1,8 +1,8 @@
 import express, { Application, Response } from 'express'
-import bodyParser from 'body-parser'
 import timeout from 'connect-timeout'
 import config from '@app/config'
 import cors from 'cors'
+import logger from '@app/helpers/logger'
 import {
   getSelection,
   getAllSelections,
@@ -29,9 +29,9 @@ import { authMiddleware } from './middleware/auth'
 const validator = createValidator()
 const app: Application = express()
 
-app.use(bodyParser.json())
+app.use(express.json())
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   })
 )
@@ -105,5 +105,5 @@ authRoutes(app)
 app.use(timeout('300s'))
 
 app.listen({ port: config.port }, () =>
-  console.log(`🚀 Server ready at http://localhost:${config.port}`)
+  logger.info(`🚀 Server ready at http://localhost:${config.port}`)
 )
