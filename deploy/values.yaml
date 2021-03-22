@@ -150,6 +150,10 @@ application:
        httpGet:
          path: /
          port: 9000
+ forecastle:
+   enabled: true
+   icon: https://raw.githubusercontent.com/stakater/ForecastleIcons/master/allmanyttan-logo.png
+   displayName: matcha-kontraktet-backend
  # kubernetes service         
  service:
    ports:
