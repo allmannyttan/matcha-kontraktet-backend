@@ -11,7 +11,7 @@ const errorHandler = (
   const status = error.status || 500
   const message = error.message || 'Something went wrong'
 
-  logger.error(message, status)
+  logger.error(message, status, req.url.toString())
 
   res.status(status).send({
     status,
