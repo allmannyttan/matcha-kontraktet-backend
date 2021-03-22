@@ -10,6 +10,7 @@ import {
 import { syncSelection } from '@app/services/populationInformationSync'
 import { fetchApiContracts } from '@app/services/fetchApiContracts'
 import config from '@app/config'
+import logger from '@app/helpers/logger'
 
 export const createSelection = async (
   req: Request,
@@ -28,7 +29,7 @@ export const createSelection = async (
 
     return res.send({ data: newSelection })
   } catch (error) {
-    console.log(error)
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
@@ -43,6 +44,7 @@ export const getAllSelections = async (
 
     return res.send({ data: selections })
   } catch (error) {
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
@@ -62,6 +64,7 @@ export const getSelection = async (
 
     return res.send({ data: selection })
   } catch (error) {
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
@@ -82,7 +85,7 @@ export const deleteSelection = async (
       },
     })
   } catch (error) {
-    console.error(error.message)
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
@@ -102,6 +105,7 @@ export const exportSelection = async (
       },
     })
   } catch (error) {
+    logger.error(error)
     return next(error)
   }
 }
@@ -126,6 +130,7 @@ export const syncPopulationRegistration = async (
       },
     })
   } catch (error) {
+    logger.error(error)
     return next(error)
   }
 }
@@ -146,6 +151,7 @@ export const fetchContracts = async (
       },
     })
   } catch (error) {
+    logger.error(error)
     return next(error)
   }
 }
@@ -164,6 +170,7 @@ export const getContracts = async (
       data: contracts,
     })
   } catch (error) {
+    logger.error(error)
     return next(error)
   }
 }

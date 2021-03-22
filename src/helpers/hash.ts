@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 import { PasswordAndHash } from './types'
+import logger from '@app/helpers/logger'
 
 const createSalt = async (): Promise<string> => {
   const saltByteSize = 12
@@ -26,6 +27,7 @@ const hashPassword = async (
         }
       })
     } catch (err) {
+      logger.error(err)
       reject(err)
     }
   })
