@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { db } from '@app/adapters/postgres'
 import HttpException from '@app/exceptions/HttpException'
+import logger from '@app/helpers/logger'
 
 export const updateContract = async (
   req: Request,
@@ -16,6 +17,7 @@ export const updateContract = async (
       .returning('*')
     return res.send({ data: contract })
   } catch (error) {
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
@@ -30,6 +32,7 @@ export const getContract = async (
     const [contract] = await db('contracts').select('*').where('id', id)
     return res.send({ data: contract })
   } catch (error) {
+    logger.error(error)
     return next(new HttpException(500, 'Internal Server Error'))
   }
 }
