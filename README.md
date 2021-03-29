@@ -26,6 +26,8 @@ Local config.json is needed for Syna credentials. Credentials are found in LastP
 }
 ```
 
+The other service for population registration is Creditsafe. Config options will be updated soon.
+
 ## Migrations and seeds
 
 - Create new migration: `npx knex migrate:make <migration_name>`
