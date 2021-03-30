@@ -12,6 +12,7 @@ import {
   createSelection,
   fetchContracts,
   getContracts,
+  fetchAndSyncSelection,
 } from '@app/routes/selection'
 import { updateContract, getContract } from '@app/routes/contracts'
 import errorHandler from '@app/middleware/errorHandler'
@@ -74,7 +75,8 @@ app.get(
   '/selection/:id/fetch-contracts',
   authMiddleware,
   validator.params(getSelectionSchema),
-  fetchContracts,
+  //  fetchContracts,
+  fetchAndSyncSelection,
   errorHandler
 )
 app.get(
@@ -84,7 +86,6 @@ app.get(
   getContracts,
   errorHandler
 )
-
 app.get(
   '/contract/:id',
   authMiddleware,

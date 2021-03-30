@@ -174,3 +174,29 @@ export const getContracts = async (
     return next(error)
   }
 }
+
+export const fetchAndSyncSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    await fetchApiContracts(id)
+    const contracts = await syncSelection(
+      id,
+      req.auth ? req.auth.username : '',
+      config.onlyInvalid
+    )
+
+    return res.send({
+      data: {
+        success: true,
+      },
+    })
+  } catch (error) {
+    logger.error(error)
+    return next(error)
+  }
+}
