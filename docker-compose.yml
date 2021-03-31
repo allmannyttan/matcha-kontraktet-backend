@@ -22,13 +22,13 @@ services:
     networks:
       - slussen
     environment:
-      - "PORT=${PORT:-4000}"
-      - "FAST_API__BASE_URL=${FASTAPIBASEURL:-http://www.fastapi.se/backendprop/v1/api/}"
-      - "FAST_API__ACCESS_TOKEN=${FASTAPIACCESSTOKEN:-12345}"
-      - "FAST_API__USER=${FASTAPIUSER:-demouser}"
-      - "FAST_API__PASSWORD=${FASTAPIPASSWORD:-demopassword}"
-      - "DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgrespassword@127.0.0.1:5432/api-db}"
-      - "POSTGRES__HOST=${POSTGRESHOST:-localhost}"
+      - 'PORT=${PORT:-4000}'
+      - 'FAST_API__BASE_URL=${FASTAPIBASEURL:-http://www.fastapi.se/backendprop/v1/api/}'
+      - 'FAST_API__ACCESS_TOKEN=${FASTAPIACCESSTOKEN:-12345}'
+      - 'FAST_API__USER=${FASTAPIUSER:-demouser}'
+      - 'FAST_API__PASSWORD=${FASTAPIPASSWORD:-demopassword}'
+      - 'DATABASE_URL=${DATABASE_URL:-postgres://postgres:postgrespassword@postgres:5432/api-db}'
+      - 'POSTGRES__HOST=${POSTGRESHOST:-postgres}'
   postgres:
     image: postgres:12.2-alpine
     networks:
