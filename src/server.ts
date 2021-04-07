@@ -10,7 +10,6 @@ import {
   exportSelection,
   syncPopulationRegistration,
   createSelection,
-  fetchContracts,
   getContracts,
   fetchAndSyncSelection,
 } from '@app/routes/selection'
@@ -75,7 +74,6 @@ app.get(
   '/selection/:id/fetch-contracts',
   authMiddleware,
   validator.params(getSelectionSchema),
-  //  fetchContracts,
   fetchAndSyncSelection,
   errorHandler
 )
