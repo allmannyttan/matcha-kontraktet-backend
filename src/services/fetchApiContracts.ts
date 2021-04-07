@@ -3,6 +3,7 @@ import {
   getSelectionById,
   updateContract,
   addContractToSelection,
+  updateTotalContractNumber,
 } from '@app/services/db'
 
 export const fetchApiContracts = async (selectionId: string) => {
@@ -20,6 +21,8 @@ export const fetchApiContracts = async (selectionId: string) => {
     const dbId = await updateContract(contract)
     addContractToSelection(dbId, selectionId)
   }
+
+  updateTotalContractNumber(selectionId, contracts.length)
 
   return contracts.length
 }

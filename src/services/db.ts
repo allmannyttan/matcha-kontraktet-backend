@@ -94,23 +94,6 @@ export const getContractsForSelection = async (
     .where('selection_contracts.selection_id', id)
 }
 
-export const getAmountOfContractsForSelection = async (
-  id: string
-): Promise<number> => {
-  const {
-    rows: [{ contracts_count }],
-  } = await db.raw(
-    `
-        SELECT count(1) as contracts_count
-        FROM contracts c
-          INNER JOIN selection_contracts s ON s.contract_id = ?
-  `,
-    [id]
-  )
-
-  return contracts_count
-}
-
 export const setSelectionSynced = async (id: string) => {
   await db('selections').where('id', id).update({
     last_population_registration_lookup: db.fn.now(),
@@ -181,4 +164,15 @@ export const addContractToSelection = async (
   } else {
     return
   }
+}
+
+export const updateTotalContractNumber = async (
+  selectionId: string,
+  totalContracts: number
+) => {
+  return db('selections')
+    .update({
+      total_contracts: totalContracts,
+    })
+    .where('id', selectionId)
 }

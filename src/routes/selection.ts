@@ -162,8 +162,8 @@ export const fetchAndSyncSelection = async (
   try {
     const { id } = req.params
 
-    const contractsRetrieved = await fetchApiContracts(id)
-    const faultyContracts = await syncSelection(
+    await fetchApiContracts(id)
+    await syncSelection(
       id,
       req.auth ? req.auth.username : '',
       config.onlyInvalid
@@ -171,8 +171,7 @@ export const fetchAndSyncSelection = async (
 
     return res.send({
       data: {
-        contractsRetrieved,
-        faultyContracts,
+        success: true,
       },
     })
   } catch (error) {
