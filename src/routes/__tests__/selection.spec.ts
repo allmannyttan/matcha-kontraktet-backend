@@ -11,10 +11,10 @@ jest.mock('@app/config', () => ({
 }))
 
 describe('#fetchAndSyncSelection()', () => {
-  let req, res, next
+  let req: any, res: any, next: jest.Mock
   beforeEach(() => {
     ;(fetchApiContracts as jest.Mock).mockResolvedValue(5)
-    ;(syncSelection as jest.Mock).mockResolvedValue(() => 'abba')
+    ;(syncSelection as jest.Mock).mockResolvedValue(2)
 
     next = jest.fn()
 
@@ -50,6 +50,7 @@ describe('#fetchAndSyncSelection()', () => {
     expect(res.send).toHaveBeenCalledWith({
       data: {
         contractsRetrieved: 5,
+        faultyContracts: 2,
       },
     })
   })

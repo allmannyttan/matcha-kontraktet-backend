@@ -13,6 +13,7 @@ import {
   saveContract,
   setSelectionSynced,
   deleteContractById,
+  getAmountOfContractsForSelection,
 } from '@app/services/db'
 import { PopulationRegistrationInformation } from '@app/types'
 import moment from 'moment'
@@ -85,6 +86,8 @@ export const syncSelection = async (
     await logSyncSuccess(id, user)
 
     await setSelectionSynced(id)
+
+    return getAmountOfContractsForSelection(id)
   } catch (error) {
     console.log(error)
     await logSyncFailure(id, user, error)
