@@ -20,7 +20,7 @@ matcha-kontraktet-backend is an API that uses Slussen to get data about leases t
 
 ## Getting started
 
-```
+```bash
 nvm use
 npm i
 docker-compose up -d
