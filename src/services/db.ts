@@ -165,3 +165,25 @@ export const addContractToSelection = async (
     return
   }
 }
+
+export const addContractSyncException = async (
+  selectionId: string,
+  contractId: string,
+  note: string
+) => {
+  const existingException = await db('population_registration_sync_exceptions')
+    .where({
+      selection_id: selectionId,
+      contract_id: contractId,
+    })
+    .first()
+
+  if (!existingException) {
+    return db('population_registration_sync_exceptions').insert({
+      selection_id: selectionId,
+      contract_id: contractId,
+      note,
+    })
+  }
+  return
+}
