@@ -243,7 +243,6 @@ describe('#syncSelection', () => {
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
     const contract_information = { pnr, address: 'an address' }
     const population_registration_information = {
-      address: 'pri address',
       pnr: '191212121212',
       exception: 'Särskild postadress utländsk',
     }
@@ -271,7 +270,6 @@ describe('#syncSelection', () => {
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
     const contract_information = { pnr, address: 'an address' }
     const population_registration_information = {
-      address: 'pri address',
       pnr: '191212121212',
       exception: null,
     }

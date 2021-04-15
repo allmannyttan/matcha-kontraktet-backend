@@ -41,7 +41,7 @@ const getPopulationRegistrationInformation = async (
 export const syncSelection = async (
   selectionId: string,
   user: string,
-  onlyInvalid = false
+  automaticDeletion = false
 ) => {
   try {
     const allContracts = await getContractsForSelection(selectionId)
@@ -70,7 +70,7 @@ export const syncSelection = async (
 
         const isValid = areAddressesEqual(c.contract_information, pri)
 
-        if (isValid && onlyInvalid) {
+        if ((!!pri.exception || isValid) && automaticDeletion) {
           await deleteContractById(c.id, selectionId)
         } else {
           //save contract
