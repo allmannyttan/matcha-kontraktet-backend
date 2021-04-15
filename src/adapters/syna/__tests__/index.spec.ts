@@ -1,5 +1,6 @@
-import { getSynaBatches } from '../index'
+import { getSynaBatches, getInformation } from '../index'
 import { getSynaInformation } from '../syna'
+import * as synRaplies from './synaReplies.json'
 
 jest.mock('../syna')
 
@@ -97,5 +98,126 @@ describe('#getSynaBatches', () => {
 
     expect(result).toEqual(Array(5).fill(Omfragad))
     expect(getSynaInformation).toHaveBeenCalledTimes(3)
+  })
+})
+
+describe('#getInformation()', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+  })
+  test('it works for real person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Real Person']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Avliden person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(synRaplies['Avliden'])
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Särskild postadress utländsk person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Särskild postadress utländsk']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Folkbokföringsadress saknas person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Folkbokföringsadress saknas']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Utvandrad person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Utvandrad']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Skyddad personuppgift person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Skyddad personuppgift']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Personnummerbyte (nytt nummer) person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Personnummerbyte (nytt nummer)']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Personnummerbyte(gammalt nummer) person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Personnummerbyte(gammalt nummer)']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
+  })
+  test('it works for Särskild postadress svensk person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(
+      synRaplies['Särskild postadress svensk']
+    )
+    const result = await getInformation(['8507099805'])
+    expect(result).toEqual([
+      {
+        address: 'Sveavägen 12',
+        name: 'LastName, FirstName',
+        pnr: '8507099805',
+      },
+    ])
   })
 })
