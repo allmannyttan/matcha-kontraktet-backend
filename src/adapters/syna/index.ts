@@ -36,6 +36,40 @@ export const getSynaBatches = async (
   return arrObjekt
 }
 
+const findException = (
+  omfragad: syna.Omfragad
+): PopulationRegistrationInformation['exception'] => {
+  let exception = null
+
+  const hasNot = omfragad.not !== ''
+  const address = omfragad.Adresslista.Adress.find((a) => a.typ === 'fbf')
+  const hasSpecialAddressAbroad = omfragad.Adresslista.Adress.some(
+    (a) => a.typ === 'spu'
+  )
+  const hasSpecialAddress = omfragad.Adresslista.Adress.some(
+    (a) => a.typ === 'sps'
+  )
+  const hasRegistrationMissing = address && address.not !== ''
+
+  if (hasSpecialAddress) {
+    exception = 'Särskild postadress svensk'
+  }
+
+  if (hasSpecialAddressAbroad) {
+    exception = 'Särskild postadress utländsk'
+  }
+
+  if (hasRegistrationMissing) {
+    exception = 'Folkbokföringsadress saknas'
+  }
+
+  if (hasNot) {
+    exception = omfragad.not
+  }
+
+  return exception
+}
+
 const toPopulationRegistrationInformation = (
   omfragad: syna.Omfragad
 ): PopulationRegistrationInformation => {
@@ -46,10 +80,13 @@ const toPopulationRegistrationInformation = (
     adrString = address.Gatabox
   }
 
+  const exception = findException(omfragad)
+
   const pri: PopulationRegistrationInformation = {
     pnr: omfragad.id,
     name: omfragad.Namnlista.Namn._t,
     address: adrString,
+    exception,
   }
 
   return pri

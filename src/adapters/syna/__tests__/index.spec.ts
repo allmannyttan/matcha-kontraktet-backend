@@ -1,8 +1,11 @@
 import { getSynaBatches, getInformation } from '../index'
 import { getSynaInformation } from '../syna'
-import * as synRaplies from './synaReplies.json'
+import * as synaReplies from './synaReplies.json'
 
 jest.mock('../syna')
+jest.mock('@app/helpers/personnummer', () => ({
+  format: (args: any) => args,
+}))
 
 const empty = {
   kod: '',
@@ -105,119 +108,65 @@ describe('#getInformation()', () => {
   beforeEach(() => {
     jest.resetAllMocks()
   })
-  test('it works for real person', async () => {
+  test('it has no exception for functioning person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Real Person']
+      synaReplies['Real Person']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBeNull()
   })
-  test('it works for Avliden person', async () => {
-    ;(getSynaInformation as jest.Mock).mockResolvedValue(synRaplies['Avliden'])
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+  test('it includes an exception for Avliden person', async () => {
+    ;(getSynaInformation as jest.Mock).mockResolvedValue(synaReplies['Avliden'])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Personen är avliden 2017-04-12')
   })
-  test('it works for Särskild postadress utländsk person', async () => {
+  test('it includes an exception Särskild postadress utländsk person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Särskild postadress utländsk']
+      synaReplies['Särskild postadress utländsk']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Särskild postadress utländsk')
   })
-  test('it works for Folkbokföringsadress saknas person', async () => {
+  test('it includes an exception Folkbokföringsadress saknas person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Folkbokföringsadress saknas']
+      synaReplies['Folkbokföringsadress saknas']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Folkbokföringsadress saknas')
   })
-  test('it works for Utvandrad person', async () => {
+  test('it includes an exception Utvandrad person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Utvandrad']
+      synaReplies['Utvandrad']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Utvandrad eller avregistrerad av annat skäl')
   })
-  test('it works for Skyddad personuppgift person', async () => {
+  test('it includes an exception Skyddad personuppgift person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Skyddad personuppgift']
+      synaReplies['Skyddad personuppgift']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Personen har skyddade personuppgifter')
   })
-  test('it works for Personnummerbyte (nytt nummer) person', async () => {
+  test('it includes an exception Personnummerbyte (nytt nummer) person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Personnummerbyte (nytt nummer)']
+      synaReplies['Personnummerbyte (nytt nummer)']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Personnummerbyte. Gammalt nummer: 920230-2320')
   })
-  test('it works for Personnummerbyte(gammalt nummer) person', async () => {
+  test('it includes an exception Personnummerbyte(gammalt nummer) person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Personnummerbyte(gammalt nummer)']
+      synaReplies['Personnummerbyte(gammalt nummer)']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Personnummerbyte. Gammalt nummer: 920230-2320')
   })
-  test('it works for Särskild postadress svensk person', async () => {
+  test('it includes an exception Särskild postadress svensk person', async () => {
     ;(getSynaInformation as jest.Mock).mockResolvedValue(
-      synRaplies['Särskild postadress svensk']
+      synaReplies['Särskild postadress svensk']
     )
-    const result = await getInformation(['8507099805'])
-    expect(result).toEqual([
-      {
-        address: 'Sveavägen 12',
-        name: 'LastName, FirstName',
-        pnr: '8507099805',
-      },
-    ])
+    const [{ exception }] = await getInformation(['8507099805'])
+    expect(exception).toBe('Särskild postadress svensk')
   })
 })
