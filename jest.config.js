@@ -13,6 +13,7 @@ module.exports = {
     prefix: '<rootDir>/',
   }),
   preset: 'ts-jest',
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup.js'],
   testEnvironment: 'node',
   testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
   watchPlugins: [

@@ -13,8 +13,8 @@ export interface ContractInformation {
 
 export interface PopulationRegistrationInformation {
   pnr: string
-  name: string
-  address: string
+  name?: string
+  address?: string
   exception: null | string
 }
 
