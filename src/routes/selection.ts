@@ -135,27 +135,6 @@ export const syncPopulationRegistration = async (
   }
 }
 
-export const fetchContracts = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { id } = req.params
-
-    const numContracts = await fetchApiContracts(id)
-
-    return res.send({
-      data: {
-        contractsRetrieved: numContracts,
-      },
-    })
-  } catch (error) {
-    logger.error(error)
-    return next(error)
-  }
-}
-
 export const getContracts = async (
   req: Request,
   res: Response,
@@ -171,6 +150,31 @@ export const getContracts = async (
     })
   } catch (error) {
     logger.error(error)
+    return next(error)
+  }
+}
+
+export const fetchAndSyncSelection = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params
+
+    await fetchApiContracts(id)
+    await syncSelection(
+      id,
+      req.auth ? req.auth.username : '',
+      config.onlyInvalid
+    )
+
+    return res.send({
+      data: {
+        success: true,
+      },
+    })
+  } catch (error) {
     return next(error)
   }
 }

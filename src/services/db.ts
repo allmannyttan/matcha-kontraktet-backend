@@ -165,3 +165,14 @@ export const addContractToSelection = async (
     return
   }
 }
+
+export const updateTotalContractNumber = async (
+  selectionId: string,
+  totalContracts: number
+) => {
+  return db('selections')
+    .update({
+      total_contracts: totalContracts,
+    })
+    .where('id', selectionId)
+}
