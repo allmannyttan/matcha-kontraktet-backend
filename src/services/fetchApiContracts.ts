@@ -9,7 +9,7 @@ import {
 export const fetchApiContracts = async (selectionId: string) => {
   const { selection_term, from, to } = await getSelectionById(selectionId)
 
-  const contracts = await client.get({
+  const allContracts = await client.get({
     url: `leasecontracts/?includetenants=true&includerentals=true${
       selection_term ? `&rentalid=${selection_term}*` : ''
     }${from ? `&from=${new Date(from).toISOString()}` : ''}${
@@ -17,6 +17,7 @@ export const fetchApiContracts = async (selectionId: string) => {
     }`,
   })
 
+  const contracts = allContracts.filter((contract: any) => !!contract.partners?.[0]?.tenant?.socialSecurityNumber)
   for (const contract of contracts) {
     const dbId = await updateContract(contract)
     addContractToSelection(dbId, selectionId)
