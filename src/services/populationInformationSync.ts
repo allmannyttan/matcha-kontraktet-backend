@@ -73,10 +73,7 @@ export const syncSelection = async (
         }
 
         const isValid = areAddressesEqual(c.contract_information, pri)
-        if (
-          ((!!pri.exception || isValid) && automaticDeletion) ||
-          personGotSecretIdentity
-        ) {
+        if ((isValid && automaticDeletion) || personGotSecretIdentity) {
           await deleteContractById(c.id, selectionId)
         } else {
           //save contract

@@ -84,12 +84,20 @@ export const getContractsForSelection = async (
   id: string
 ): Promise<Contract[]> => {
   return await db
-    .select('contracts.*')
+    .select(
+      'contracts.*',
+      'population_registration_sync_exceptions.note as exception'
+    )
     .from('contracts')
     .innerJoin(
       'selection_contracts',
       'contracts.id',
       'selection_contracts.contract_id'
+    )
+    .leftJoin(
+      'population_registration_sync_exceptions',
+      'contracts.id',
+      'population_registration_sync_exceptions.contract_id'
     )
     .where('selection_contracts.selection_id', id)
 }

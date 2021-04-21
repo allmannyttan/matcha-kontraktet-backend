@@ -24,6 +24,7 @@ export interface Contract {
   population_registration_information?: PopulationRegistrationInformation
   status?: ContractStatus
   comment?: string
+  exception?: string
   last_population_registration_lookup: Date | null
 }
 
