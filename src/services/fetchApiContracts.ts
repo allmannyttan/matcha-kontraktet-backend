@@ -9,13 +9,17 @@ import {
 export const fetchApiContracts = async (selectionId: string) => {
   const { selection_term, from, to } = await getSelectionById(selectionId)
 
+  const url = `leasecontracts/?includetenants=true&includerentals=true${
+    selection_term ? `&rentalid=${selection_term}*` : ''
+  }${from ? `&from=${new Date(from).toISOString()}` : ''}${
+    to ? `&to=${new Date(to).toISOString()}` : ''
+  }`
+
   const contracts = await client.get({
-    url: `leasecontracts/?includetenants=true&includerentals=true${
-      selection_term ? `&rentalid=${selection_term}*` : ''
-    }${from ? `&from=${new Date(from).toISOString()}` : ''}${
-      to ? `&to=${new Date(to).toISOString()}` : ''
-    }`,
+    url: url,
   })
+
+  // console.log('contracts', contracts)
 
   for (const contract of contracts) {
     const dbId = await updateContract(contract)

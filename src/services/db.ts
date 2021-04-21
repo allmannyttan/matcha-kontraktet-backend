@@ -57,6 +57,8 @@ export const getSelectionById = async (id: string): Promise<Selection> => {
 }
 
 export const saveContract = async (c: Contract) => {
+  console.log('c', c)
+  delete c.exception
   await db('contracts').where('id', c.id).update(c)
 }
 
