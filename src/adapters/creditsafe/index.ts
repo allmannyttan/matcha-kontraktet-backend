@@ -19,11 +19,9 @@ const creditsafeXML = (pnr: string) => dedent`
 </GetDataBySecure>
 `
 
-let count = 0
-
 const getAddress = async (
   pnr: string
-): Promise<PopulationRegistrationInformation | null> => {
+): Promise<PopulationRegistrationInformation> => {
   const client = await createClientAsync(
     `${config.creditsafe.host}${config.creditsafe.getDataPath}`
   )
@@ -37,10 +35,14 @@ const getAddress = async (
         if (err) {
           return reject(err)
         }
+
         if (res.GetDataBySecureResult.Error) {
           console.error(res.GetDataBySecureResult.Error)
           // Not the prettiest, but rejecting will fail the entire Promise.all in getInformation
-          return resolve(null)
+          return resolve({
+            pnr,
+            exception: res.GetDataBySecureResult.Error.Reject_text,
+          })
         }
 
         const data =
@@ -51,6 +53,7 @@ const getAddress = async (
           pnr,
           name: `${data.FIRST_NAME} ${data.LAST_NAME}`,
           address: `${data.ADDRESS}`,
+          exception: null,
         })
       }
     )

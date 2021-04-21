@@ -29,7 +29,17 @@ export const getContract = async (
 ) => {
   try {
     const { id } = req.params
-    const [contract] = await db('contracts').select('*').where('id', id)
+    const [contract] = await db('contracts')
+      .select(
+        'contracts.*',
+        'population_registration_sync_exceptions.note as exception'
+      )
+      .leftJoin(
+        'population_registration_sync_exceptions',
+        'contracts.id',
+        'population_registration_sync_exceptions.contract_id'
+      )
+      .where('contracts.id', id)
     return res.send({ data: contract })
   } catch (error) {
     logger.error(error)

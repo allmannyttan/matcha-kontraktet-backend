@@ -27,7 +27,7 @@ export const areAddressesEqual = (
 ): boolean => {
   //Normalize addresses for comparison
   let contractAddress = normalize(contract.address)
-  let priAddress = normalize(pri.address)
+  let priAddress = pri.address ? normalize(pri.address) : pri.address
 
   return contractAddress === priAddress
 }

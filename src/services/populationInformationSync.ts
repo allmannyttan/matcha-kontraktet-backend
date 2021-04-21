@@ -13,6 +13,7 @@ import {
   saveContract,
   setSelectionSynced,
   deleteContractById,
+  addContractSyncException,
 } from '@app/services/db'
 import { PopulationRegistrationInformation } from '@app/types'
 import moment from 'moment'
@@ -38,12 +39,12 @@ const getPopulationRegistrationInformation = async (
 }
 
 export const syncSelection = async (
-  id: string,
+  selectionId: string,
   user: string,
-  onlyInvalid = false
+  automaticDeletion = false
 ) => {
   try {
-    const allContracts = await getContractsForSelection(id)
+    const allContracts = await getContractsForSelection(selectionId)
 
     const contracts = allContracts.filter((c) =>
       valid(c.contract_information.pnr)
@@ -58,15 +59,22 @@ export const syncSelection = async (
         const pri = info.find(
           (i) => format(i.pnr) === format(c.contract_information.pnr)
         )
-
         if (!pri) {
           return
         }
 
-        const isValid = areAddressesEqual(c.contract_information, pri)
+        const personGotSecretIdentity = [
+          'Personen har skyddade personuppgifter',
+          'Skyddad',
+        ].includes(pri?.exception as string)
 
-        if (isValid && onlyInvalid) {
-          await deleteContractById(c.id, id)
+        if (!!pri.exception && !personGotSecretIdentity) {
+          await addContractSyncException(selectionId, c.id, pri.exception)
+        }
+
+        const isValid = areAddressesEqual(c.contract_information, pri)
+        if ((isValid && automaticDeletion) || personGotSecretIdentity) {
+          await deleteContractById(c.id, selectionId)
         } else {
           //save contract
           await saveContract({
@@ -82,12 +90,12 @@ export const syncSelection = async (
       })
     )
 
-    await logSyncSuccess(id, user)
+    await logSyncSuccess(selectionId, user)
 
-    await setSelectionSynced(id)
+    await setSelectionSynced(selectionId)
   } catch (error) {
     console.log(error)
-    await logSyncFailure(id, user, error)
+    await logSyncFailure(selectionId, user, error)
     throw error
   }
 }

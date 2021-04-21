@@ -1,0 +1,622 @@
+{
+  "Avliden": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "2202302226",
+              "sekel": "19",
+              "not": "Personen är avliden 2017-04-12",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Hjalmarsson, Gudrun Helga"
+                },
+                "Mellannamn": "Helga",
+                "Efternamn": "Hjalmarsson",
+                "Fornamn": "Gudrun"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "Senast kända folkbokföringsuppgifter:",
+                    "Gatabox": "Härnerudsgatan 9",
+                    "Postnr": "22525",
+                    "Postort": "Vaggeryd",
+                    "Lan": {
+                      "kod": "06",
+                      "_t": "Jönköpings län"
+                    },
+                    "Kommun": {
+                      "kod": "65",
+                      "_t": "Vaggeryd"
+                    },
+                    "Forsamling": {
+                      "kod": "01",
+                      "_t": "Byarum-Bondstorp"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  },
+                  {
+                    "typ": "sps",
+                    "not": "",
+                    "Coadress": "c/o Trygghetsboendet Syrenen",
+                    "Gatabox": "Storgatan 25",
+                    "Postnr": "12321",
+                    "Postort": "JÖNKÖPING"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Särskild postadress utländsk": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "5204312242",
+              "sekel": "19",
+              "not": "",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Gryning, Charlotta Lovisa"
+                },
+                "Mellannamn": "Lovisa",
+                "Efternamn": "Gryning",
+                "Fornamn": "Charlotta"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Bajonettstigen 1",
+                    "Postnr": "24001",
+                    "Postort": "LUND",
+                    "Lan": {
+                      "kod": "12",
+                      "_t": "Skåne län"
+                    },
+                    "Kommun": {
+                      "kod": "81",
+                      "_t": "Lund"
+                    },
+                    "Forsamling": {
+                      "kod": "05",
+                      "_t": "Norra Nöbbelöv"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  },
+                  {
+                    "typ": "spu",
+                    "not": "",
+                    "Coadress": "C/o Ilona M. Engellau",
+                    "Fortsadress": "12 Ave. Albert 1 Er L' Hermitage",
+                    "Gatabox": "05801 Beaulieu S/m",
+                    "Land": "Frankrike"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Folkbokföringsadress saknas": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "6909313337",
+              "sekel": "19",
+              "not": "",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Rasmusson, Ludvig Uno"
+                },
+                "Mellannamn": "Uno",
+                "Efternamn": "Rasmusson",
+                "Fornamn": "Ludvig"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "Folkbokföringsadress saknas",
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Utvandrad": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "7606310006",
+              "sekel": "19",
+              "not": "Utvandrad eller avregistrerad av annat skäl",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Kehmal, Anjou"
+                },
+                "Mellannamn": {},
+                "Efternamn": "Kehmal",
+                "Fornamn": "Anjou"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "Senast kända folkbokföringsuppgifter:",
+                    "Coadress": "c/o Lafi",
+                    "Gatabox": "Karl Hovbergsgatan 39 B lgh 1002",
+                    "Postnr": "40110",
+                    "Postort": "Eskilstuna",
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Skyddad personuppgift": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "7711317771",
+              "sekel": "19",
+              "not": "Personen har skyddade personuppgifter",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Personuppgift skyddad"
+                },
+                "Mellannamn": {},
+                "Efternamn": {},
+                "Fornamn": {}
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Åter avsändaren",
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Personnummerbyte (nytt nummer)": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "9202301124",
+              "sekel": "19",
+              "not": "Personnummerbyte. Gammalt nummer: 920230-2320",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Kropp, Eva Mia Syster"
+                },
+                "Mellannamn": "Mia",
+                "Efternamn": "Kropp",
+                "Fornamn": "Eva"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Sandgatan 1",
+                    "Postnr": "35212",
+                    "Postort": "JÖNKÖPING",
+                    "Lan": {
+                      "kod": "06",
+                      "_t": "Jönköpings län"
+                    },
+                    "Kommun": {
+                      "kod": "80",
+                      "_t": "Jönköping"
+                    },
+                    "Forsamling": {
+                      "kod": "02",
+                      "_t": "Jönköpings Kristina-Ljungarum"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Personnummerbyte(gammalt nummer)": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "9202301124",
+              "sekel": "19",
+              "not": "Personnummerbyte. Gammalt nummer: 920230-2320",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Kropp, Eva Mia Syster"
+                },
+                "Mellannamn": "Mia",
+                "Efternamn": "Kropp",
+                "Fornamn": "Eva"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Sandgatan 1",
+                    "Postnr": "35212",
+                    "Postort": "JÖNKÖPING",
+                    "Lan": {
+                      "kod": "06",
+                      "_t": "Jönköpings län"
+                    },
+                    "Kommun": {
+                      "kod": "80",
+                      "_t": "Jönköping"
+                    },
+                    "Forsamling": {
+                      "kod": "02",
+                      "_t": "Jönköpings Kristina-Ljungarum"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Särskild postadress svensk": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "1"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "9802308883",
+              "sekel": "19",
+              "not": "",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "Vilde, Selma Tilde"
+                },
+                "Mellannamn": "Selma",
+                "Efternamn": "Vilde",
+                "Fornamn": "Tilde"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Husqvarnagatan 1 lgh 1005",
+                    "Postnr": "12345",
+                    "Postort": "JÖNKÖPING",
+                    "Lan": {
+                      "kod": "06",
+                      "_t": "Jönköpings län"
+                    },
+                    "Kommun": {
+                      "kod": "80",
+                      "_t": "Jönköping"
+                    },
+                    "Forsamling": {
+                      "kod": "02",
+                      "_t": "Jönköpings Kristina-Ljungarum"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  },
+                  {
+                    "typ": "sps",
+                    "not": "",
+                    "Gatabox": "Kattsundsgatan 25 lgh 1001",
+                    "Postnr": "22501",
+                    "Postort": "MALMÖ"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Real Person": {
+    "Svar": {
+      "ec": "OK",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "0"
+      },
+      "Objektlista": {
+        "antal": "1",
+        "Objekt": [
+          {
+            "Omfragad": {
+              "id": "8507099805",
+              "sekel": "19",
+              "not": "",
+              "fbfdatum": "20140417",
+              "Namnlista": {
+                "Namn": {
+                  "tilltal": "",
+                  "_t": "LastName, FirstName"
+                },
+                "Mellannamn": {},
+                "Efternamn": "LastName",
+                "Fornamn": "FirstName"
+              },
+              "Adresslista": {
+                "Adress": [
+                  {
+                    "typ": "fbf",
+                    "not": "",
+                    "Gatabox": "Sveavägen 12",
+                    "Postnr": "11312",
+                    "Postort": "Stockholm",
+                    "Lan": {
+                      "kod": "01",
+                      "_t": "Stockholms län"
+                    },
+                    "Kommun": {
+                      "kod": "80",
+                      "_t": "Stockholm"
+                    },
+                    "Forsamling": {
+                      "kod": "15",
+                      "_t": "Katarina"
+                    },
+                    "Landsdel": {
+                      "kod": ""
+                    },
+                    "Landskap": {
+                      "kod": ""
+                    },
+                    "Distrikt": {
+                      "kod": ""
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "Error": {
+    "Svar": {
+      "ec": "E ",
+      "Produkt": {
+        "id": "BFbokf",
+        "ver": "1.4"
+      },
+      "Process": {
+        "prddebug": "0",
+        "debug": "0",
+        "trace": "0"
+      },
+      "Objektlista": {
+        "antal": "1"
+      },
+      "Error": {
+        "Msg": [
+          {
+            "id": "XML8001",
+            "sev": "E",
+            "runid": "1",
+            "_t": "XML internal error:  Error \"E\" severity prohibited xml output for runid: 1"
+          },
+          {
+            "id": "STD0001",
+            "sev": "E",
+            "runid": "1",
+            "_t": "Det finns ingen person folkbokförd i Sverige, 16 år eller äldre, med personnummer 220230-2226"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -5,7 +5,6 @@ export enum ContractStatus {
   MANUALLY_VERIFIED = 'MANUALLY_VERIFIED',
   UNDER_INVESTIGATION = 'UNDER_INVESTIGATION',
 }
-
 export interface ContractInformation {
   pnr: string
   name: string
@@ -14,8 +13,9 @@ export interface ContractInformation {
 
 export interface PopulationRegistrationInformation {
   pnr: string
-  name: string
-  address: string
+  name?: string
+  address?: string
+  exception: null | string
 }
 
 export interface Contract {
@@ -24,6 +24,7 @@ export interface Contract {
   population_registration_information?: PopulationRegistrationInformation
   status?: ContractStatus
   comment?: string
+  exception?: string
   last_population_registration_lookup: Date | null
 }
 

@@ -84,12 +84,20 @@ export const getContractsForSelection = async (
   id: string
 ): Promise<Contract[]> => {
   return await db
-    .select('contracts.*')
+    .select(
+      'contracts.*',
+      'population_registration_sync_exceptions.note as exception'
+    )
     .from('contracts')
     .innerJoin(
       'selection_contracts',
       'contracts.id',
       'selection_contracts.contract_id'
+    )
+    .leftJoin(
+      'population_registration_sync_exceptions',
+      'contracts.id',
+      'population_registration_sync_exceptions.contract_id'
     )
     .where('selection_contracts.selection_id', id)
 }
@@ -164,6 +172,28 @@ export const addContractToSelection = async (
   } else {
     return
   }
+}
+
+export const addContractSyncException = async (
+  selectionId: string,
+  contractId: string,
+  note: string
+) => {
+  const existingException = await db('population_registration_sync_exceptions')
+    .where({
+      selection_id: selectionId,
+      contract_id: contractId,
+    })
+    .first()
+
+  if (!existingException) {
+    return db('population_registration_sync_exceptions').insert({
+      selection_id: selectionId,
+      contract_id: contractId,
+      note,
+    })
+  }
+  return
 }
 
 export const updateTotalContractNumber = async (
