@@ -1,4 +1,4 @@
-import { getInformation } from '@app/adapters/syna'
+import { getInformation } from '@app/adapters/creditsafe'
 import {
   getAutomatedStatus,
   isStatusOverrideable,
@@ -18,7 +18,7 @@ import { syncSelection } from '../populationInformationSync'
 import { db } from '@app/adapters/postgres'
 
 jest.mock('@app/services/db')
-jest.mock('@app/adapters/syna')
+jest.mock('@app/adapters/creditsafe')
 jest.mock('@app/helpers/populationRegistration')
 jest.mock('moment', () => () => ({ toDate: () => 'a mocked date' }))
 
