@@ -1,4 +1,5 @@
-import { getInformation } from '@app/adapters/creditsafe'
+import { getInformation as getInformationCreditsafe } from '@app/adapters/creditsafe'
+import { getInformation as getInformationSyna } from '@app/adapters/syna'
 import {
   getAutomatedStatus,
   isStatusOverrideable,
@@ -18,6 +19,7 @@ import { syncSelection } from '../populationInformationSync'
 import { db } from '@app/adapters/postgres'
 
 jest.mock('@app/services/db')
+jest.mock('@app/adapters/syna')
 jest.mock('@app/adapters/creditsafe')
 jest.mock('@app/helpers/populationRegistration')
 jest.mock('moment', () => () => ({ toDate: () => 'a mocked date' }))
@@ -30,7 +32,8 @@ describe('#syncSelection', () => {
         contract_information: { pnr: 'test pnr' },
       },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([])
+    ;(getInformationCreditsafe as jest.Mock).mockResolvedValue([])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([])
     ;(saveContract as jest.Mock).mockResolvedValue({})
     ;(logSyncFailure as jest.Mock).mockResolvedValue({})
     ;(logSyncSuccess as jest.Mock).mockResolvedValue({})
@@ -51,7 +54,7 @@ describe('#syncSelection', () => {
     ])
 
     await syncSelection('id', 'user')
-    expect(getInformation).toHaveBeenCalledWith(['191212121212'])
+    expect(getInformationSyna).toHaveBeenCalledWith(['191212121212'])
   })
 
   test('it matches pnr and saves contract with info from population registration', async () => {
@@ -66,7 +69,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -91,7 +94,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -116,7 +119,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'NOT OVERRIDEABLE' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -141,7 +144,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'OVERRIDABLE' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -155,7 +158,7 @@ describe('#syncSelection', () => {
   })
 
   test('it logs success', async () => {
-    ;(getInformation as jest.Mock).mockResolvedValue([])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([])
 
     await syncSelection('id', 'user')
     expect(logSyncSuccess).toHaveBeenCalledWith('id', 'user')
@@ -163,7 +166,7 @@ describe('#syncSelection', () => {
   })
 
   test('it logs failure when something fails and throws error', async () => {
-    ;(getInformation as jest.Mock).mockImplementation(() => {
+    ;(getInformationSyna as jest.Mock).mockImplementation(() => {
       throw new Error('test')
     })
 
@@ -187,7 +190,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -208,7 +211,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -229,7 +232,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, id: '1339', status: 'CAN BE OVERRIDDEN' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -251,7 +254,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { id: contract_id, contract_information, status: 'NOT OVERRIDEABLE' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
@@ -278,7 +281,7 @@ describe('#syncSelection', () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { id: contract_id, contract_information, status: 'NOT OVERRIDEABLE' },
     ])
-    ;(getInformation as jest.Mock).mockResolvedValue([
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
     ])
 
