@@ -59,18 +59,24 @@ export const syncSelection = async (
         const pri = info.find(
           (i) => format(i.pnr) === format(c.contract_information.pnr)
         )
-
         if (!pri) {
           return
         }
 
-        if (!!pri.exception) {
+        const personGotSecretIdentity = [
+          'Personen har skyddade personuppgifter',
+          'Skyddad',
+        ].includes(pri?.exception as string)
+
+        if (!!pri.exception && !personGotSecretIdentity) {
           await addContractSyncException(selectionId, c.id, pri.exception)
         }
 
         const isValid = areAddressesEqual(c.contract_information, pri)
-
-        if ((!!pri.exception || isValid) && automaticDeletion) {
+        if (
+          ((!!pri.exception || isValid) && automaticDeletion) ||
+          personGotSecretIdentity
+        ) {
           await deleteContractById(c.id, selectionId)
         } else {
           //save contract

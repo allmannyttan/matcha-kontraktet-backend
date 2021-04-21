@@ -24,6 +24,15 @@ jest.mock('@app/adapters/creditsafe')
 jest.mock('@app/helpers/populationRegistration')
 jest.mock('moment', () => () => ({ toDate: () => 'a mocked date' }))
 
+import config from '@app/config'
+
+jest.mock('@app/config', () => ({
+  ...jest.requireActual('@app/config').default,
+  populationRegistrationProvider: {
+    toLocaleLowerCase: jest.fn(),
+  },
+}))
+
 describe('#syncSelection', () => {
   beforeEach(() => {
     jest.resetAllMocks()
@@ -38,7 +47,8 @@ describe('#syncSelection', () => {
     ;(logSyncFailure as jest.Mock).mockResolvedValue({})
     ;(logSyncSuccess as jest.Mock).mockResolvedValue({})
     ;(setSelectionSynced as jest.Mock).mockResolvedValue({})
-
+    ;(config.populationRegistrationProvider
+      .toLocaleLowerCase as jest.Mock).mockReturnValue('syna')
     return db.raw('truncate table population_registration_sync_exceptions')
   })
 
@@ -288,5 +298,55 @@ describe('#syncSelection', () => {
     await syncSelection(selection_id, 'user_id', true)
 
     expect(addContractSyncException).toBeCalledTimes(0)
+  })
+
+  test('it does not add exception and deletes contract for protected persons for Syna', async () => {
+    const pnr = '191212121212'
+    const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
+    const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      pnr: '191212121212',
+      exception: 'Personen har skyddade personuppgifter',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue('VALID')
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(false)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { id: contract_id, contract_information, status: 'NOT OVERRIDEABLE' },
+    ])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+
+    await syncSelection(selection_id, 'user_id', true)
+
+    expect(addContractSyncException).toBeCalledTimes(0)
+    expect(deleteContractById).toHaveBeenCalledWith(contract_id, selection_id)
+  })
+
+  test('it does not add exception and deletes contract for protected persons for Creditsafe', async () => {
+    const pnr = '191212121212'
+    const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
+    const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
+    const contract_information = { pnr, address: 'an address' }
+    const population_registration_information = {
+      pnr: '191212121212',
+      exception: 'Skyddad',
+    }
+    ;(getAutomatedStatus as jest.Mock).mockReturnValue('VALID')
+    ;(isStatusOverrideable as jest.Mock).mockReturnValue(false)
+    ;(getContractsForSelection as jest.Mock).mockResolvedValue([
+      { id: contract_id, contract_information, status: 'NOT OVERRIDEABLE' },
+    ])
+    ;(getInformationCreditsafe as jest.Mock).mockResolvedValue([
+      population_registration_information,
+    ])
+    ;(config.populationRegistrationProvider
+      .toLocaleLowerCase as jest.Mock).mockReturnValue('creditsafe')
+
+    await syncSelection(selection_id, 'user_id', true)
+
+    expect(addContractSyncException).toBeCalledTimes(0)
+    expect(deleteContractById).toHaveBeenCalledWith(contract_id, selection_id)
   })
 })
