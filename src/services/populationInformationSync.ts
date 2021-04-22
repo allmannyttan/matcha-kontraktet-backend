@@ -53,7 +53,6 @@ export const syncSelection = async (
     const validPnrs = contracts.map((c) => c.contract_information.pnr)
 
     const info = await getPopulationRegistrationInformation(validPnrs)
-    console.log('all info', info)
 
     await Promise.all(
       contracts.map(async (c) => {

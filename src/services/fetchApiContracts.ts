@@ -19,11 +19,9 @@ export const fetchApiContracts = async (selectionId: string) => {
     url: url,
   })
 
-  // console.log('contracts', contracts)
-
   for (const contract of contracts) {
     const dbId = await updateContract(contract)
-    addContractToSelection(dbId, selectionId)
+    await addContractToSelection(dbId, selectionId)
   }
 
   updateTotalContractNumber(selectionId, contracts.length)

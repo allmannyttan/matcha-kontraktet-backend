@@ -52,10 +52,7 @@ describe('#app()', () => {
       .reply(200, fastApiData)
 
     nock('https://apitest.syna.se:443', { encodedQueryParams: true })
-      .post(
-        '/',
-        '\n  <?xml version="1.0" encoding="iso-8859-1" ?>\n  <Fraga>\n    <Produkt id="BFbokf" ver="1.4">\n      <Objektlista antal="1">\n        <Objekt><Idnr>8605111254</Idnr></Objekt>\n      </Objektlista>\n    </Produkt>\n    <Process timestamp="" timeout="" />\n    <Kund nr="503811" anv="xml" ipaddress="80.244.206.18" />\n  </Fraga>'
-      )
+      .post('/')
       .reply(200, synaReply)
 
     await db.raw('truncate table selections cascade')
