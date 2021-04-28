@@ -40,7 +40,7 @@ describe('fetchApiContracts', () => {
     })
   })
 
-  test('calls updateContract', async () => {
+  test('doesnt include contracts that lacks socialsecuritynumber', async () => {
     ;(client.get as jest.Mock).mockResolvedValueOnce([{ id: 1 }])
     ;(updateContract as jest.Mock).mockResolvedValueOnce('a9231923')
     ;(getSelectionById as jest.Mock).mockResolvedValueOnce([
@@ -49,11 +49,24 @@ describe('fetchApiContracts', () => {
 
     await fetchApiContracts('1337')
 
-    expect(updateContract).toBeCalledWith({ id: 1 })
+    expect(updateContract).toHaveBeenCalledTimes(0)
   })
 
+  test('calls updateContract', async () => {
+    ;(client.get as jest.Mock).mockResolvedValueOnce([{ id: 1, partners: [ { tenant: { socialSecurityNumber: '1337'} }]  }])
+    ;(updateContract as jest.Mock).mockResolvedValueOnce('a9231923')
+    ;(getSelectionById as jest.Mock).mockResolvedValueOnce([
+      { selection_term: 2 },
+    ])
+
+    await fetchApiContracts('1337')
+
+    expect(updateContract).toBeCalledWith({ id: 1, partners: [ { tenant: { socialSecurityNumber: '1337'} }]  })
+  })
+
+
   test('adds contract to selection', async () => {
-    ;(client.get as jest.Mock).mockResolvedValueOnce([{ id: 1 }])
+    ;(client.get as jest.Mock).mockResolvedValueOnce([{ id: 1, partners: [ { tenant: { socialSecurityNumber: '1337'} }]  }])
     ;(updateContract as jest.Mock).mockResolvedValueOnce('a9231923')
     ;(getSelectionById as jest.Mock).mockResolvedValueOnce([
       { selection_term: 2 },
