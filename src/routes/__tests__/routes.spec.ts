@@ -1,28 +1,3 @@
-/**
- * 
-1. create selection
-2. fetch contracts for selection
-3. get contract
-4. update contract
-5. get contract
-6. create selection
-7. fetch contracts for selection
-8. get contract
-
-expect(contract from 3 . status === "verifierad" && contract from 8 .status === default value)
- */
-
-// import { fetchAndSyncSelection } from '../selection'
-// import { fetchApiContracts } from '@app/services/fetchApiContracts'
-// import { syncSelection } from '@app/services/populationInformationSync'
-
-// jest.mock('@app/services/fetchApiContracts')
-// jest.mock('@app/services/populationInformationSync')
-// jest.mock('@app/config', () => ({
-//   postgres: {},
-//   onlyInvalid: true,
-// }))
-
 import app from '@app/app'
 import { agent } from 'supertest'
 import nock from 'nock'
@@ -36,8 +11,8 @@ const synaReply = readFileSync(
   './src/routes/__tests__/synaReply.xml'
 ).toString()
 
-// nock.recorder.rec()
 const request = agent(app)
+const selectionIds: any[] = []
 
 describe('#app()', () => {
   let token: string
@@ -46,17 +21,16 @@ describe('#app()', () => {
     selectionTerm = 'bar'
 
     nock(config.api.baseUrl)
+      .persist()
       .get(
         `/leasecontracts/?includetenants=true&includerentals=true&rentalid=${selectionTerm}*`
       )
       .reply(200, fastApiData)
 
     nock('https://apitest.syna.se:443', { encodedQueryParams: true })
+      .persist()
       .post('/')
       .reply(200, synaReply)
-
-    await db.raw('truncate table selections cascade')
-    await db.raw('truncate table contracts cascade')
 
     const { body } = await request.post('/auth/generate-token').send({
       username: 'test',
@@ -65,19 +39,102 @@ describe('#app()', () => {
 
     token = body.token
   })
-  test('it works', async () => {
+
+  afterAll(async () => {
+    const contracts = await db
+      .select('contract_id')
+      .from('selection_contracts')
+      .whereIn('selection_id', selectionIds)
+
+    const contractIds = contracts.map(({ contract_id }) => contract_id)
+
+    await db
+      .select('*')
+      .from('selection_contracts')
+      .whereIn('selection_id', selectionIds)
+      .del()
+
+    await db.select('*').from('selections').whereIn('id', selectionIds).del()
+
+    await db.select('*').from('contracts').whereIn('id', contractIds).del()
+  })
+
+  test('replicate status overwrite bug', async () => {
+    // Create first selection
     const {
       body: {
-        data: { id: selectionId },
+        data: { id: firstSelectionId },
       },
     } = await request
       .post('/selection')
       .auth(token, { type: 'bearer' })
       .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
 
+    selectionIds.push(firstSelectionId)
+
+    // Fetch and sync contracts for selection
     await request
-      .get(`/selection/${selectionId}/fetch-contracts`)
+      .get(`/selection/${firstSelectionId}/fetch-contracts`)
       .auth(token, { type: 'bearer' })
       .expect(200)
+
+    // Get contracts for selection
+    const {
+      body: {
+        data: [{ id: contractId }],
+      },
+    } = await request
+      .get(`/selection/${firstSelectionId}/contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    // Update contract to Verified
+    const {
+      body: { data: updatedContract },
+    } = await request
+      .put(`/contract/${contractId}/`)
+      .auth(token, { type: 'bearer' })
+      .send({ status: 'VERIFIED' })
+      .expect(200)
+
+    expect(updatedContract.status).toBe('VERIFIED')
+
+    // Create a second selection
+    const {
+      body: {
+        data: { id: secondSelectionId },
+      },
+    } = await request
+      .post('/selection')
+      .auth(token, { type: 'bearer' })
+      .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
+
+    selectionIds.push(secondSelectionId)
+
+    // Fetch and sync contracts for selection
+    await request
+      .get(`/selection/${secondSelectionId}/fetch-contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    // Get contracts for selection
+    const {
+      body: { data: firstSelectionContracts },
+    } = await request
+      .get(`/selection/${firstSelectionId}/contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    // Get contracts for selection
+    const {
+      body: { data: secondSelectionContracts },
+    } = await request
+      .get(`/selection/${secondSelectionId}/contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    expect(firstSelectionContracts).not.toEqual(secondSelectionContracts)
   }, 15000)
 })
