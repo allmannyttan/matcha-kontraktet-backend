@@ -59,7 +59,7 @@ describe('#app()', () => {
     await db.select('*').from('contracts').whereIn('id', contractIds).del()
   })
 
-  test('replicate status overwrite bug', async () => {
+  test('contract status should keep state when a new selection fetches same contract', async () => {
     // Create first selection
     const {
       body: {
@@ -119,22 +119,28 @@ describe('#app()', () => {
       .auth(token, { type: 'bearer' })
       .expect(200)
 
-    // Get contracts for selection
+    // Get contracts for first selection
     const {
-      body: { data: firstSelectionContracts },
+      body: {
+        data: [{ status: firstSelectionContractStatus }],
+      },
     } = await request
       .get(`/selection/${firstSelectionId}/contracts`)
       .auth(token, { type: 'bearer' })
       .expect(200)
 
-    // Get contracts for selection
+    // Get contracts for second selection
     const {
-      body: { data: secondSelectionContracts },
+      body: {
+        data: [{ status: secondSelectionContractStatus }],
+      },
     } = await request
       .get(`/selection/${secondSelectionId}/contracts`)
       .auth(token, { type: 'bearer' })
       .expect(200)
 
-    expect(firstSelectionContracts).not.toEqual(secondSelectionContracts)
+    expect(firstSelectionContractStatus).toBe('VERIFIED')
+
+    expect(firstSelectionContractStatus).toEqual(secondSelectionContractStatus)
   }, 15000)
 })

@@ -77,7 +77,7 @@ describe('#syncSelection', () => {
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
-      { contract_information, status: 'CAN BE OVERRIDDEN' },
+      { contract_information },
     ])
     ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
@@ -102,7 +102,7 @@ describe('#syncSelection', () => {
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
-      { contract_information, status: 'CAN BE OVERRIDDEN' },
+      { contract_information },
     ])
     ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,
@@ -117,7 +117,7 @@ describe('#syncSelection', () => {
     })
   })
 
-  test('it does not override a status that should not be overridden', async () => {
+  test('it does not override a status when contract has it set already', async () => {
     const pnr = '191212121212'
     const contract_information = { pnr, address: 'an address' }
     const population_registration_information = {
@@ -152,7 +152,7 @@ describe('#syncSelection', () => {
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
-      { contract_information, status: 'OVERRIDABLE' },
+      { contract_information },
     ])
     ;(getInformationSyna as jest.Mock).mockResolvedValue([
       population_registration_information,

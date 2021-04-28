@@ -124,18 +124,6 @@ export const updateContract = async (contract: any): Promise<string> => {
   }
 
   if (contractInDb) {
-    await db('contracts')
-      .update({
-        contract_information: {
-          name: contract.partners?.[0]?.tenant?.fullName,
-          pnr: contract.partners?.[0]?.tenant?.socialSecurityNumber,
-          address:
-            contract.rentalObject?.rental?.addresses?.[0]?.street || null,
-        },
-        start_date: contract.initialDate,
-      })
-      .where('id', contractInDb.id)
-
     return contractInDb.id
   }
 

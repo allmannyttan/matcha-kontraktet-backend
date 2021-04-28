@@ -3,7 +3,6 @@ import { getInformation as getCreditsafeInformation } from '@app/adapters/credit
 import { format, valid } from '@app/helpers/personnummer'
 import {
   getAutomatedStatus,
-  isStatusOverrideable,
   areAddressesEqual,
 } from '@app/helpers/populationRegistration'
 import {
@@ -81,10 +80,9 @@ export const syncSelection = async (
             ...c,
             last_population_registration_lookup: moment().toDate(),
             population_registration_information: pri,
-            status:
-              c.status && !isStatusOverrideable(c.status)
-                ? c.status
-                : getAutomatedStatus(c.contract_information, pri),
+            status: !!c.status
+              ? c.status
+              : getAutomatedStatus(c.contract_information, pri),
           })
         }
       })
