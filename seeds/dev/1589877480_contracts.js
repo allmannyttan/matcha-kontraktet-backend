@@ -29,12 +29,22 @@ exports.seed = async (knex) => {
           name: 'Martin Loman',
           address: 'Vägen 1',
         },
+        {
+          pnr: '7505310438',
+          name: 'Kennedy Bakircioglü',
+          address: 'Vägen 1',
+        },
       ]),
       population_registration_information: JSON.stringify([
         {
           pnr: '7505310438',
           name: 'Maaaartin',
           address: 'Vägen 2 i en annan stad',
+        },
+        {
+          pnr: '7505310438',
+          name: 'Kennedy Bakircioglü',
+          address: 'Vägen 1',
         },
       ]),
       status: 'INVALID',
