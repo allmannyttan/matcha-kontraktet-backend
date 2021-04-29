@@ -38,7 +38,7 @@ describe('#syncSelection', () => {
     jest.resetAllMocks()
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       {
-        contract_information: { pnr: 'test pnr' },
+        contract_information: [{ pnr: 'test pnr' }],
       },
     ])
     ;(getInformationCreditsafe as jest.Mock).mockResolvedValue([])
@@ -59,8 +59,8 @@ describe('#syncSelection', () => {
 
   test('it removes invalid pnrs', async () => {
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
-      { contract_information: { pnr: 'invalid pnr' } },
-      { contract_information: { pnr: '191212121212' } },
+      { contract_information: [{ pnr: 'invalid pnr' }] },
+      { contract_information: [{ pnr: '191212121212' }] },
     ])
 
     await syncSelection('id', 'user')
@@ -69,19 +69,21 @@ describe('#syncSelection', () => {
 
   test('it matches pnr and saves contract with info from population registration', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
-    const population_registration_information = {
-      address: 'pri address',
-      pnr: '191212121212',
-    }
+    const contract_information = [{ pnr, address: 'an address' }]
+    const population_registration_information = [
+      {
+        address: 'pri address',
+        pnr: '191212121212',
+      },
+    ]
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information },
     ])
-    ;(getInformationSyna as jest.Mock).mockResolvedValue([
-      population_registration_information,
-    ])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue(
+      population_registration_information
+    )
 
     await syncSelection('id', 'user')
     expect(saveContract).toHaveBeenCalledWith({
@@ -94,19 +96,21 @@ describe('#syncSelection', () => {
 
   test('it does not save contract population registration', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
-    const population_registration_information = {
-      address: 'pri address',
-      pnr: '191212121212',
-    }
+    const contract_information = [{ pnr, address: 'an address' }]
+    const population_registration_information = [
+      {
+        address: 'pri address',
+        pnr: '191212121212',
+      },
+    ]
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information },
     ])
-    ;(getInformationSyna as jest.Mock).mockResolvedValue([
-      population_registration_information,
-    ])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue(
+      population_registration_information
+    )
 
     await syncSelection('id', 'user')
     expect(saveContract).toHaveBeenCalledWith({
@@ -119,19 +123,21 @@ describe('#syncSelection', () => {
 
   test('it does not override a status when contract has it set already', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
-    const population_registration_information = {
-      address: 'pri address',
-      pnr: '191212121212',
-    }
+    const contract_information = [{ pnr, address: 'an address' }]
+    const population_registration_information = [
+      {
+        address: 'pri address',
+        pnr: '191212121212',
+      },
+    ]
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('VALID')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(false)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information, status: 'NOT OVERRIDEABLE' },
     ])
-    ;(getInformationSyna as jest.Mock).mockResolvedValue([
-      population_registration_information,
-    ])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue(
+      population_registration_information
+    )
 
     await syncSelection('id', 'user')
     expect(saveContract).toHaveBeenCalledWith({
@@ -144,19 +150,21 @@ describe('#syncSelection', () => {
 
   test('it finds pnrs with different formats', async () => {
     const pnr = '19121212-1212'
-    const contract_information = { pnr, address: 'an address' }
-    const population_registration_information = {
-      address: 'pri address',
-      pnr: '191212121212',
-    }
+    const contract_information = [{ pnr, address: 'an address' }]
+    const population_registration_information = [
+      {
+        address: 'pri address',
+        pnr: '191212121212',
+      },
+    ]
     ;(getAutomatedStatus as jest.Mock).mockReturnValue('A MOCKED STATUS')
     ;(isStatusOverrideable as jest.Mock).mockReturnValue(true)
     ;(getContractsForSelection as jest.Mock).mockResolvedValue([
       { contract_information },
     ])
-    ;(getInformationSyna as jest.Mock).mockResolvedValue([
-      population_registration_information,
-    ])
+    ;(getInformationSyna as jest.Mock).mockResolvedValue(
+      population_registration_information
+    )
 
     await syncSelection('id', 'user')
     expect(saveContract).toHaveBeenCalledWith({
@@ -189,7 +197,7 @@ describe('#syncSelection', () => {
 
   test('it does NOT save valids when you set onlyInvalid', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       address: 'pri address',
       pnr: '191212121212',
@@ -210,7 +218,7 @@ describe('#syncSelection', () => {
 
   test('it does save invalids when you set onlyInvalid', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       address: 'pri address',
       pnr: '191212121212',
@@ -231,7 +239,7 @@ describe('#syncSelection', () => {
 
   test('it deletes valids when only invalids', async () => {
     const pnr = '191212121212'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       address: 'pri address',
       pnr: '191212121212',
@@ -254,7 +262,7 @@ describe('#syncSelection', () => {
     const pnr = '191212121212'
     const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       pnr: '191212121212',
       exception: 'Särskild postadress utländsk',
@@ -281,7 +289,7 @@ describe('#syncSelection', () => {
     const pnr = '191212121212'
     const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       pnr: '191212121212',
       exception: null,
@@ -304,7 +312,7 @@ describe('#syncSelection', () => {
     const pnr = '191212121212'
     const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       pnr: '191212121212',
       exception: 'Personen har skyddade personuppgifter',
@@ -328,7 +336,7 @@ describe('#syncSelection', () => {
     const pnr = '191212121212'
     const contract_id = '4a26d023-2b74-4073-bcaf-9426d7827e93'
     const selection_id = '76c179bb-7db2-4dc3-a6bb-199a82e128b9'
-    const contract_information = { pnr, address: 'an address' }
+    const contract_information = [{ pnr, address: 'an address' }]
     const population_registration_information = {
       pnr: '191212121212',
       exception: 'Skyddad',
