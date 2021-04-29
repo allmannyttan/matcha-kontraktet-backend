@@ -27,13 +27,72 @@
         "roleName": "string",
         "tenant": {
           "id": "string",
-          "socialSecurityNumber": "7505310438",
+          "socialSecurityNumber": "7405310123",
           "changedBy": "string",
           "changeDate": "string",
           "createdBy": "string",
           "createDate": "string",
           "name": "string",
           "fullName": "Bertil Bertilsson",
+          "phoneNumbers": [
+            {
+              "type": "string",
+              "number": "string"
+            }
+          ],
+          "emailAddresses": [
+            {
+              "type": "string",
+              "address": "string"
+            }
+          ],
+          "addresses": [
+            {
+              "guid": "string",
+              "type": "string",
+              "street": "string",
+              "box": "string",
+              "co": "string",
+              "attention": "string",
+              "zipCode": "string",
+              "city": "string",
+              "country": "string"
+            }
+          ],
+          "contact": {
+            "type": "string",
+            "firstName": "string",
+            "lastName": "string",
+            "fullName": "string",
+            "phoneNumbers": [
+              {
+                "type": "string",
+                "number": "string"
+              }
+            ],
+            "emailAddresses": [
+              {
+                "type": "string",
+                "address": "string"
+              }
+            ]
+          },
+          "className": "string"
+        }
+      },
+      {
+        "id": "string",
+        "className": "string",
+        "roleName": "string",
+        "tenant": {
+          "id": "string",
+          "socialSecurityNumber": "8804161586",
+          "changedBy": "string",
+          "changeDate": "string",
+          "createdBy": "string",
+          "createDate": "string",
+          "name": "string",
+          "fullName": "Chris Christersson",
           "phoneNumbers": [
             {
               "type": "string",
@@ -125,7 +184,7 @@
           {
             "guid": "string",
             "type": "string",
-            "street": "string",
+            "street": "The street we live on",
             "box": "string",
             "co": "string",
             "attention": "string",

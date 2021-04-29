@@ -17,7 +17,9 @@ export const fetchApiContracts = async (selectionId: string) => {
     }`,
   })
 
-  const contracts = allContracts.filter((contract: any) => !!contract.partners?.[0]?.tenant?.socialSecurityNumber)
+  const contracts = allContracts.filter(
+    (contract: any) => !!contract.partners?.[0]?.tenant?.socialSecurityNumber
+  )
   for (const contract of contracts) {
     const dbId = await updateContract(contract)
     await addContractToSelection(dbId, selectionId)

@@ -58,7 +58,15 @@ export const getSelectionById = async (id: string): Promise<Selection> => {
 
 export const saveContract = async (c: Contract) => {
   delete c.exception
-  await db('contracts').where('id', c.id).update(c)
+  await db('contracts')
+    .where('id', c.id)
+    .update({
+      ...c,
+      contract_information: JSON.stringify(c.contract_information),
+      population_registration_information: JSON.stringify(
+        c.population_registration_information
+      ),
+    })
 }
 
 export const logSyncFailure = async (id: string, user: string, error: any) => {
@@ -127,13 +135,15 @@ export const updateContract = async (contract: any): Promise<string> => {
     return contractInDb.id
   }
 
+  const contractInformation = contract.partners.map((c: any) => ({
+    name: c.tenant?.fullName,
+    pnr: c.tenant?.socialSecurityNumber,
+    address: address || null,
+  }))
+
   const [newId]: string[] = await db('contracts')
     .insert({
-      contract_information: {
-        name: contract.partners?.[0]?.tenant?.fullName,
-        pnr: contract.partners?.[0]?.tenant?.socialSecurityNumber,
-        address: contract.rentalObject?.rental?.addresses?.[0]?.street || null,
-      },
+      contract_information: JSON.stringify(contractInformation),
       contract_id: contract.id,
       start_date: contract.initialDate,
     })

@@ -14,13 +14,18 @@ const synaReply = readFileSync(
 const request = agent(app)
 const selectionIds: any[] = []
 
+jest.mock('@app/helpers/personnummer', () => ({
+  valid: () => true,
+  format: (args: any) => args,
+}))
+
 describe('#app()', () => {
   let token: string
   let selectionTerm: string
   beforeAll(async () => {
     selectionTerm = 'bar'
 
-    nock(config.api.baseUrl)
+    nock(config.api.baseUrl, { allowUnmocked: true })
       .persist()
       .get(
         `/leasecontracts/?includetenants=true&includerentals=true&rentalid=${selectionTerm}*`
@@ -142,5 +147,50 @@ describe('#app()', () => {
     expect(firstSelectionContractStatus).toBe('VERIFIED')
 
     expect(firstSelectionContractStatus).toEqual(secondSelectionContractStatus)
+  }, 15000)
+
+  test('contract with multiple partners syncs all of them', async () => {
+    // Create first selection
+    const {
+      body: {
+        data: { id: selectionId },
+      },
+    } = await request
+      .post('/selection')
+      .auth(token, { type: 'bearer' })
+      .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
+
+    selectionIds.push(selectionId)
+
+    // Fetch and sync contracts for selection
+    await request
+      .get(`/selection/${selectionId}/fetch-contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    // Get contracts for selection
+    const {
+      body: { data: contracts },
+    } = await request
+      .get(`/selection/${selectionId}/contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    expect(contracts).toHaveLength(1)
+
+    const contractWithMultiplePartners = contracts[0]
+    const {
+      contract_information,
+      population_registration_information,
+    } = contractWithMultiplePartners
+
+    expect(contract_information).toHaveLength(2)
+    expect(population_registration_information).toHaveLength(2)
+
+    expect(contract_information[0].pnr).not.toEqual(contract_information[1].pnr)
+    expect(population_registration_information[0].pnr).not.toEqual(
+      population_registration_information[1].pnr
+    )
   }, 15000)
 })
