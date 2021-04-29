@@ -1,0 +1,140 @@
+[
+  {
+    "id": "1",
+    "guid": "string",
+    "currentEndDate": "string",
+    "changedBy": "string",
+    "changeDate": "string",
+    "className": "string",
+    "createdBy": "string",
+    "createDate": "string",
+    "date": "string",
+    "description": "string",
+    "endingDate": "string",
+    "initialDate": "2020-02-22T00:00:00.000Z",
+    "noticedBy": "string",
+    "noticeStatus": "string",
+    "noticeDate": "string",
+    "noticeTime": 0,
+    "renewalDate": "string",
+    "signDate": "string",
+    "terminatedDate": "string",
+    "terminationReason": "string",
+    "partners": [
+      {
+        "id": "string",
+        "className": "string",
+        "roleName": "string",
+        "tenant": {
+          "id": "string",
+          "socialSecurityNumber": "7505310438",
+          "changedBy": "string",
+          "changeDate": "string",
+          "createdBy": "string",
+          "createDate": "string",
+          "name": "string",
+          "fullName": "Bertil Bertilsson",
+          "phoneNumbers": [
+            {
+              "type": "string",
+              "number": "string"
+            }
+          ],
+          "emailAddresses": [
+            {
+              "type": "string",
+              "address": "string"
+            }
+          ],
+          "addresses": [
+            {
+              "guid": "string",
+              "type": "string",
+              "street": "string",
+              "box": "string",
+              "co": "string",
+              "attention": "string",
+              "zipCode": "string",
+              "city": "string",
+              "country": "string"
+            }
+          ],
+          "contact": {
+            "type": "string",
+            "firstName": "string",
+            "lastName": "string",
+            "fullName": "string",
+            "phoneNumbers": [
+              {
+                "type": "string",
+                "number": "string"
+              }
+            ],
+            "emailAddresses": [
+              {
+                "type": "string",
+                "address": "string"
+              }
+            ]
+          },
+          "className": "string"
+        }
+      }
+    ],
+    "documents": [
+      {
+        "id": "string",
+        "description": "string",
+        "link": "string"
+      }
+    ],
+    "rentalObject": {
+      "type": "Rental",
+      "id": "string",
+      "rental": {
+        "type": "Lägenhet",
+        "id": "string",
+        "guid": "string",
+        "changedBy": "string",
+        "changeDate": "string",
+        "createdBy": "string",
+        "createDate": "string",
+        "documents": [
+          {
+            "id": "string",
+            "description": "string",
+            "link": "string"
+          }
+        ],
+        "areas": [
+          {
+            "type": "string",
+            "size": "string",
+            "status": "string",
+            "measuredBy": "string",
+            "measuredDate": "string",
+            "measuredType": "string",
+            "derivedFrom": "string",
+            "perimeter": "string"
+          }
+        ],
+        "name": "string",
+        "fullName": "string",
+        "description": "string",
+        "addresses": [
+          {
+            "guid": "string",
+            "type": "string",
+            "street": "string",
+            "box": "string",
+            "co": "string",
+            "attention": "string",
+            "zipCode": "string",
+            "city": "string",
+            "country": "string"
+          }
+        ]
+      }
+    }
+  }
+]
