@@ -5,10 +5,12 @@ exports.up = (knex) => {
     .then((contracts) =>
       contracts.map((c) => ({
         ...c,
-        contract_information: JSON.stringify([c.contract_information]),
-        population_registration_information: JSON.stringify([
-          c.population_registration_information,
-        ]),
+        contract_information: c.contract_information
+          ? JSON.stringify([c.contract_information])
+          : null,
+        population_registration_information: c.population_registration_information
+          ? JSON.stringify([c.population_registration_information])
+          : null,
       }))
     )
     .then((contracts) =>
@@ -32,10 +34,12 @@ exports.down = (knex) => {
         } = c
         return {
           ...c,
-          contract_information: JSON.stringify(contractInformation),
-          population_registration_information: JSON.stringify(
-            populationRegistrationInformation
-          ),
+          contract_information: contractInformation
+            ? JSON.stringify(contractInformation)
+            : null,
+          population_registration_information: populationRegistrationInformation
+            ? JSON.stringify(populationRegistrationInformation)
+            : null,
         }
       })
     )
