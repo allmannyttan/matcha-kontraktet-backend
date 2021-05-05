@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Svar>
+  <Objektlista antal="1">
+    <Objekt>
+      <Omfragad id="7405310123" not="" fbfdatum="20100131" sekel="19">
+        <Namnlista>
+          <Namn tilltal="Hans">Bertil Bertilsson</Namn>
+          <Mellannamn>Bertil</Mellannamn>
+          <Efternamn>Bertilsson</Efternamn>
+          <Fornamn>Hans</Fornamn>
+        </Namnlista>
+        <Adresslista>
+          <Adress typ="fbf" not="">
+            <Coadress></Coadress>
+            <Fortsadress>Hanshult</Fortsadress>
+            <Gatabox>The street we live on</Gatabox>
+            <Postnr>12345</Postnr>
+            <Postort>HANSSONSTAD</Postort>
+            <Land></Land>
+            <Lan kod="99">Hanssons län</Lan>
+            <Kommun kod="99">Hanssons</Kommun>
+            <Forsamling kod="99">Församling</Forsamling>
+            <Landsdel kod="1">Götaland</Landsdel>
+            <Landskap kod="01">Skåne</Landskap>
+            <Distrikt kod="999">Distrikt</Distrikt>
+          </Adress>
+          <Adress typ="fbf" not="">
+            <Coadress>Hemswell Drive Colindale</Coadress>
+            <Gatabox>Nw9 5WN London</Gatabox>
+            <Postnr></Postnr>
+            <Postort></Postort>
+            <Land>Storbrittanien</Land>
+          </Adress>
+        </Adresslista>
+      </Omfragad>
+    </Objekt>
+    <Objekt>
+      <Omfragad id="8804161586" not="Personen är avliden 2017-04-12" fbfdatum="20100131" sekel="19">
+        <Namnlista>
+          <Namn tilltal="Hans">Chris Christersson</Namn>
+          <Mellannamn>Chris</Mellannamn>
+          <Efternamn>Christersson</Efternamn>
+          <Fornamn>Hans</Fornamn>
+        </Namnlista>
+        <Adresslista>
+          <Adress typ="fbf" not="">
+            <Coadress></Coadress>
+            <Fortsadress>Hanshult</Fortsadress>
+            <Gatabox>The street we live on</Gatabox>
+            <Postnr>12345</Postnr>
+            <Postort>HANSSONSTAD</Postort>
+            <Land></Land>
+            <Lan kod="99">Hanssons län</Lan>
+            <Kommun kod="99">Hanssons</Kommun>
+            <Forsamling kod="99">Församling</Forsamling>
+            <Landsdel kod="1">Götaland</Landsdel>
+            <Landskap kod="01">Skåne</Landskap>
+            <Distrikt kod="999">Distrikt</Distrikt>
+          </Adress>
+          <Adress typ="fbf" not="">
+            <Coadress>Hemswell Drive Colindale</Coadress>
+            <Gatabox>Nw9 5WN London</Gatabox>
+            <Postnr></Postnr>
+            <Postort></Postort>
+            <Land>Storbrittanien</Land>
+          </Adress>
+        </Adresslista>
+      </Omfragad>
+    </Objekt>
+  </Objektlista>
+</Svar>

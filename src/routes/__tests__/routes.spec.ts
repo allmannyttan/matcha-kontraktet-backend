@@ -11,6 +11,10 @@ const synaReply = readFileSync(
   './src/routes/__tests__/synaReply.xml'
 ).toString()
 
+const synaReplyWithException = readFileSync(
+  './src/routes/__tests__/synaReplyWithException.xml'
+).toString()
+
 const request = agent(app)
 const selectionIds: any[] = []
 
@@ -50,22 +54,18 @@ describe('#app()', () => {
       .select('contract_id')
       .from('selection_contracts')
       .whereIn('selection_id', selectionIds)
-
     const contractIds = contracts.map(({ contract_id }) => contract_id)
-
     await db
       .select('*')
       .from('selection_contracts')
       .whereIn('selection_id', selectionIds)
       .del()
-
     await db
       .select('*')
       .from('population_registration_syncs')
       .whereIn('selection_id', selectionIds)
       .del()
     await db.select('*').from('selections').whereIn('id', selectionIds).del()
-
     await db.select('*').from('contracts').whereIn('id', contractIds).del()
   })
 
@@ -197,5 +197,36 @@ describe('#app()', () => {
     expect(population_registration_information[0].pnr).not.toEqual(
       population_registration_information[1].pnr
     )
+  }, 15000)
+
+  test('selection including contracts with exceptions should be deletable', async () => {
+    nock.cleanAll()
+    nock('https://apitest.syna.se:443', { encodedQueryParams: true })
+      .post('/')
+      .reply(200, synaReplyWithException)
+
+    // Create selection
+    const {
+      body: {
+        data: { id: selectionId },
+      },
+    } = await request
+      .post('/selection')
+      .auth(token, { type: 'bearer' })
+      .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
+
+    selectionIds.push(selectionId)
+
+    // Fetch and sync contracts for selection
+    await request
+      .get(`/selection/${selectionId}/fetch-contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    await request
+      .del(`/selection/${selectionId}`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
   }, 15000)
 })
