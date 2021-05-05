@@ -59,6 +59,11 @@ describe('#app()', () => {
       .whereIn('selection_id', selectionIds)
       .del()
 
+    await db
+      .select('*')
+      .from('population_registration_syncs')
+      .whereIn('selection_id', selectionIds)
+      .del()
     await db.select('*').from('selections').whereIn('id', selectionIds).del()
 
     await db.select('*').from('contracts').whereIn('id', contractIds).del()
