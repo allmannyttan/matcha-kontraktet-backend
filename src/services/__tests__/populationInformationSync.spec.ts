@@ -16,8 +16,6 @@ import {
 } from '@app/services/db'
 import { syncSelection } from '../populationInformationSync'
 
-import { db } from '@app/adapters/postgres'
-
 jest.mock('@app/services/db')
 jest.mock('@app/adapters/syna')
 jest.mock('@app/adapters/creditsafe')
@@ -49,7 +47,6 @@ describe('#syncSelection', () => {
     ;(setSelectionSynced as jest.Mock).mockResolvedValue({})
     ;(config.populationRegistrationProvider
       .toLocaleLowerCase as jest.Mock).mockReturnValue('syna')
-    return db.raw('truncate table population_registration_sync_exceptions')
   })
 
   test('it gets contracts for selection', async () => {
