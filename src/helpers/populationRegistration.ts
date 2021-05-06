@@ -5,10 +5,10 @@ import {
 } from '@app/types'
 
 export const getAutomatedStatus = (
-  contract: ContractInformation,
-  pri: PopulationRegistrationInformation
+  contract: ContractInformation[],
+  pri: PopulationRegistrationInformation[]
 ): ContractStatus => {
-  return areAddressesEqual(contract, pri)
+  return pri.every((p) => areAddressesEqual(contract[0], p))
     ? ContractStatus.VERIFIED
     : ContractStatus.INVALID
 }

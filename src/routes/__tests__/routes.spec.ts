@@ -11,8 +11,17 @@ const synaReply = readFileSync(
   './src/routes/__tests__/synaReply.xml'
 ).toString()
 
+const synaReplyWithException = readFileSync(
+  './src/routes/__tests__/synaReplyWithException.xml'
+).toString()
+
 const request = agent(app)
 const selectionIds: any[] = []
+
+jest.mock('@app/helpers/personnummer', () => ({
+  valid: () => true,
+  format: (args: any) => args,
+}))
 
 describe('#app()', () => {
   let token: string
@@ -20,7 +29,7 @@ describe('#app()', () => {
   beforeAll(async () => {
     selectionTerm = 'bar'
 
-    nock(config.api.baseUrl)
+    nock(config.api.baseUrl, { allowUnmocked: true })
       .persist()
       .get(
         `/leasecontracts/?includetenants=true&includerentals=true&rentalid=${selectionTerm}*`
@@ -45,17 +54,18 @@ describe('#app()', () => {
       .select('contract_id')
       .from('selection_contracts')
       .whereIn('selection_id', selectionIds)
-
     const contractIds = contracts.map(({ contract_id }) => contract_id)
-
     await db
       .select('*')
       .from('selection_contracts')
       .whereIn('selection_id', selectionIds)
       .del()
-
+    await db
+      .select('*')
+      .from('population_registration_syncs')
+      .whereIn('selection_id', selectionIds)
+      .del()
     await db.select('*').from('selections').whereIn('id', selectionIds).del()
-
     await db.select('*').from('contracts').whereIn('id', contractIds).del()
   })
 
@@ -142,5 +152,81 @@ describe('#app()', () => {
     expect(firstSelectionContractStatus).toBe('VERIFIED')
 
     expect(firstSelectionContractStatus).toEqual(secondSelectionContractStatus)
+  }, 15000)
+
+  test('contract with multiple partners syncs all of them', async () => {
+    // Create first selection
+    const {
+      body: {
+        data: { id: selectionId },
+      },
+    } = await request
+      .post('/selection')
+      .auth(token, { type: 'bearer' })
+      .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
+
+    selectionIds.push(selectionId)
+
+    // Fetch and sync contracts for selection
+    await request
+      .get(`/selection/${selectionId}/fetch-contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    // Get contracts for selection
+    const {
+      body: { data: contracts },
+    } = await request
+      .get(`/selection/${selectionId}/contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    expect(contracts).toHaveLength(1)
+
+    const contractWithMultiplePartners = contracts[0]
+    const {
+      contract_information,
+      population_registration_information,
+    } = contractWithMultiplePartners
+
+    expect(contract_information).toHaveLength(2)
+    expect(population_registration_information).toHaveLength(2)
+
+    expect(contract_information[0].pnr).not.toEqual(contract_information[1].pnr)
+    expect(population_registration_information[0].pnr).not.toEqual(
+      population_registration_information[1].pnr
+    )
+  }, 15000)
+
+  test('selection including contracts with exceptions should be deletable', async () => {
+    nock.cleanAll()
+    nock('https://apitest.syna.se:443', { encodedQueryParams: true })
+      .post('/')
+      .reply(200, synaReplyWithException)
+
+    // Create selection
+    const {
+      body: {
+        data: { id: selectionId },
+      },
+    } = await request
+      .post('/selection')
+      .auth(token, { type: 'bearer' })
+      .send({ name: 'foo', selection_term: selectionTerm })
+      .expect(200)
+
+    selectionIds.push(selectionId)
+
+    // Fetch and sync contracts for selection
+    await request
+      .get(`/selection/${selectionId}/fetch-contracts`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
+
+    await request
+      .del(`/selection/${selectionId}`)
+      .auth(token, { type: 'bearer' })
+      .expect(200)
   }, 15000)
 })

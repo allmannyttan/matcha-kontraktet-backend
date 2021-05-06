@@ -46,32 +46,46 @@ export const syncSelection = async (
     const allContracts = await getContractsForSelection(selectionId)
 
     const contracts = allContracts.filter((c) =>
-      valid(c.contract_information.pnr)
+      c.contract_information.every(({ pnr }) => valid(pnr))
     )
 
-    const validPnrs = contracts.map((c) => c.contract_information.pnr)
+    const validPnrs = contracts.flatMap((c) =>
+      c.contract_information.map(({ pnr }) => pnr)
+    )
 
     const info = await getPopulationRegistrationInformation(validPnrs)
 
     await Promise.all(
       contracts.map(async (c) => {
-        const pri = info.find(
-          (i) => format(i.pnr) === format(c.contract_information.pnr)
+        const pri = info.filter((i) =>
+          c.contract_information.some(
+            ({ pnr }) => format(i.pnr) === format(pnr)
+          )
         )
+
         if (!pri) {
           return
         }
 
-        const personGotSecretIdentity = [
-          'Personen har skyddade personuppgifter',
-          'Skyddad',
-        ].includes(pri?.exception as string)
+        const personGotSecretIdentity = pri.some(({ exception }) =>
+          ['Personen har skyddade personuppgifter', 'Skyddad'].includes(
+            exception as string
+          )
+        )
 
-        if (!!pri.exception && !personGotSecretIdentity) {
-          await addContractSyncException(selectionId, c.id, pri.exception)
+        const priWithException = pri.find(({ exception }) => !!exception)
+
+        if (!!priWithException && !personGotSecretIdentity) {
+          await addContractSyncException(
+            selectionId,
+            c.id,
+            priWithException.exception as string
+          )
         }
 
-        const isValid = areAddressesEqual(c.contract_information, pri)
+        const isValid = pri.every((p) =>
+          areAddressesEqual(c.contract_information[0], p)
+        )
         if ((isValid && automaticDeletion) || personGotSecretIdentity) {
           await deleteContractById(c.id, selectionId)
         } else {
