@@ -80,14 +80,12 @@ postgresql:
 application: 
  applicationName: "mk-backend"
  # tenant operator space
- space:
+ namespace:
    enabled: true
-   tenant: "allmannyttan"
-   annotations:
-      argocd.argoproj.io/sync-wave: "-1"
    additionalLabels:
       kind: pr
       team: allmanytta
+      stakater.com/tenant: allmanyttan
 
  # kubernetes deployment
  sealedSecret:
