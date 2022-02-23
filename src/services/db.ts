@@ -103,11 +103,19 @@ export const getContractsForSelection = async (
       'contracts.id',
       'selection_contracts.contract_id'
     )
-    .leftJoin(
-      'population_registration_sync_exceptions',
-      'contracts.id',
-      'population_registration_sync_exceptions.contract_id'
-    )
+    .leftJoin('population_registration_sync_exceptions', function (_this: any) {
+      _this
+        .on(
+          'contracts.id',
+          '=',
+          'population_registration_sync_exceptions.contract_id'
+        )
+        .andOn(
+          'selection_contracts.selection_id',
+          '=',
+          'population_registration_sync_exceptions.selection_id'
+        )
+    })
     .where('selection_contracts.selection_id', id)
 }
 
